@@ -1,0 +1,11 @@
+name: mianah
+region: lon
+static_sites:
+  - name: mianah-web
+    source_dir: /
+    index_document: index.html
+    catchall_document: mianah-home.html
+    github:
+      repo: OWNER/mianah-site
+      branch: main
+      deploy_on_push: true

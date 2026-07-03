@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sizes & Pricing — Mianah</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{--oat:#FFFFFF;--oat-deep:#F5EFFB;--card:#FFFFFF;--ink:#2C2233;--ink-soft:#6E6178;--berry:#F26B54;--berry-deep:#DE5138;--lilac:#B49BE0;--lilac-deep:#7E5CBB;--pink:#FBDCE8;--pink-bright:#F5379A;--green:#35815E;--green-deep:#2C6E4F;--line:#EAE1F0;--gold:#C9A15A;--radius:14px;--wrap:1200px;--shadow:0 18px 40px -20px rgba(44,34,51,.30);--ease:cubic-bezier(.22,.61,.36,1)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--oat);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:500;line-height:1.1;margin:0;letter-spacing:-.01em}
+a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.eyebrow{font-family:'Inter';font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--berry);font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-weight:600;font-size:.95rem;padding:.9em 1.5em;border-radius:100px;border:1.5px solid transparent;cursor:pointer;transition:transform .25s var(--ease),background .25s,color .25s,border-color .25s;font-family:'Inter'}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--berry-deep);color:#fff}.btn-primary:hover{background:#C8462F}
+.btn-add{background:var(--green);color:#fff}.btn-add:hover{background:var(--green-deep)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}.btn-ghost:hover{background:var(--ink);color:#fff}
+.announce{background:var(--pink);color:var(--ink);text-align:center;font-size:.8rem;letter-spacing:.04em;padding:.65em 16px}
+.announce b{color:var(--berry);font-weight:600}
+header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.9);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:74px}
+.nav-links{display:flex;gap:28px;font-size:.9rem;font-weight:500;justify-self:start}
+.nav-links a{color:var(--ink-soft);transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--berry)}
+.brand{grid-column:2;display:flex;align-items:center;justify-content:center;gap:9px;font-family:'Fraunces';font-size:1.8rem;font-weight:500;color:var(--ink)}
+.brand .mark{width:26px;height:26px;flex:none}
+.nav-right{justify-self:end;display:flex;align-items:center;gap:14px}
+.cur-select{font-family:'Inter';font-size:.82rem;font-weight:600;color:var(--ink);background:transparent;border:1.4px solid var(--line);border-radius:100px;padding:.4em .8em;cursor:pointer}.cur-select:hover{border-color:var(--berry)}
+.icon-btn{background:none;border:none;cursor:pointer;color:var(--ink);padding:6px;display:inline-flex;position:relative;border-radius:8px}.icon-btn:hover{color:var(--berry)}
+.icon-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6}
+.cart-count{position:absolute;top:-2px;right:-4px;background:var(--berry);color:#fff;font-size:.62rem;font-weight:700;min-width:16px;height:16px;border-radius:100px;display:flex;align-items:center;justify-content:center;padding:0 3px;line-height:1}
+.burger{display:none}
+.mobile-menu{display:none}
+.phero{text-align:center;padding:60px 0 12px}
+.phero .eyebrow{display:block;margin-bottom:14px}
+.phero h1{font-size:clamp(2.4rem,5vw,3.6rem)}
+.phero h1 em{font-style:italic;color:var(--pink-bright)}
+.phero p{color:var(--ink-soft);max-width:52ch;margin:16px auto 0}
+.sec{padding:56px 0}
+.sec-head{text-align:center;max-width:600px;margin:0 auto 40px}
+.sec-head h2{font-size:clamp(1.8rem,3.2vw,2.5rem);margin:12px 0 10px}
+.sec-head p{color:var(--ink-soft);margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 24px -18px rgba(44,34,51,.30);transition:transform .35s var(--ease),box-shadow .35s}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.card-art{position:relative;overflow:hidden;background:var(--oat-deep);display:block}
+.card-art img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .6s var(--ease)}
+.card:hover .card-art img{transform:scale(1.04)}
+.card-body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.card-body .cat{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--berry);font-weight:600;margin-bottom:8px}
+.card-body h3{font-size:1.25rem;margin-bottom:4px}
+.stars{font-size:.78rem;color:var(--gold);letter-spacing:1px;margin-bottom:8px}
+.stars span{color:var(--ink-soft);font-family:'Inter';letter-spacing:normal;margin-left:4px}
+.price{font-family:'Fraunces';font-size:1.15rem;color:var(--berry)}.price small{font-family:'Inter';font-size:.72rem;color:var(--ink-soft)}
+.sizepick{display:flex;gap:7px;margin:14px 0 16px;flex-wrap:wrap}
+.chip{border:1.4px solid var(--line);background:transparent;border-radius:100px;padding:.32em .8em;font-size:.76rem;font-weight:600;color:var(--ink-soft);cursor:pointer;font-family:'Inter';transition:all .2s}
+.chip:hover{border-color:var(--berry);color:var(--berry)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.card .btn{margin-top:auto;width:100%}
+.filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:0 auto 40px}
+.filt{border:1.4px solid var(--line);background:transparent;border-radius:100px;padding:.5em 1.2em;font-size:.86rem;font-weight:600;color:var(--ink-soft);cursor:pointer;font-family:'Inter';transition:all .2s}
+.filt:hover{border-color:var(--berry);color:var(--berry)}
+.filt.on{background:var(--berry-deep);border-color:var(--berry-deep);color:#fff}
+.size-row{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;align-items:end}
+.size-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 20px;text-align:center;box-shadow:0 8px 24px -18px rgba(44,34,51,.3)}
+.size-vis{margin:0 auto 18px;background:linear-gradient(150deg,#F8CFC5,#DCCBF3);border:1px solid var(--line);border-radius:4px;width:82px}
+.size-card h3{font-size:1.6rem}.size-card .dim{font-size:.84rem;color:var(--ink-soft);margin-top:6px}
+.size-card .inch{font-size:.78rem;color:var(--ink-soft);opacity:.8}
+.size-card .px{font-size:.9rem;color:var(--berry);font-weight:600;margin-top:12px;font-family:'Fraunces'}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.info-card{background:var(--oat-deep);border-radius:var(--radius);padding:30px 26px}
+.info-card h3{font-size:1.3rem;margin-bottom:8px}
+.info-card p{color:var(--ink-soft);margin:0;font-size:.94rem}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:52px 0}
+.split.rev .split-img{order:2}
+.split-img img{width:100%;border-radius:var(--radius);box-shadow:var(--shadow)}
+.split-copy h2{font-size:clamp(1.7rem,3vw,2.3rem);margin-bottom:16px}
+.split-copy p{color:var(--ink-soft);margin:0 0 14px}
+.hm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.hm-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px 24px;text-align:center;box-shadow:0 8px 24px -18px rgba(44,34,51,.3)}
+.hm-img{display:block;width:100%;max-width:168px;aspect-ratio:4/5;object-fit:cover;border-radius:14px;margin:0 auto;box-shadow:0 14px 28px -16px rgba(44,34,51,.55);border:3px solid #fff}
+.hm-card h3{font-size:1.25rem;margin:16px 0 6px}.hm-card p{color:var(--ink-soft);font-size:.9rem;margin:0}
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center}
+.values .v h3{font-size:1.2rem;margin:10px 0 6px}.values .v p{color:var(--ink-soft);font-size:.92rem;margin:0}
+.vic{width:52px;height:52px;border-radius:50%;background:var(--oat-deep);display:grid;place-items:center;margin:0 auto}
+.vic svg{width:26px;height:26px;stroke:var(--berry);fill:none;stroke-width:1.6}
+.band{background:linear-gradient(135deg,#FFE7E1,#EEE5FB);border-radius:var(--radius);padding:48px;text-align:center;margin:20px 0}
+.band h2{font-size:clamp(1.6rem,2.8vw,2.2rem);margin-bottom:12px}
+.band p{color:var(--ink-soft);max-width:48ch;margin:0 auto 22px}
+.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.8rem;font-weight:600;margin-bottom:7px}
+.field input,.field textarea,.field select{width:100%;padding:.85em 1em;border:1.5px solid var(--line);border-radius:12px;font-family:'Inter';font-size:.95rem;background:var(--card);color:var(--ink)}
+.field textarea{min-height:140px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{outline:2px solid var(--berry);outline-offset:1px;border-color:transparent}
+.contact-info{background:var(--oat-deep);border-radius:var(--radius);padding:32px}
+.contact-info h3{font-size:1.3rem;margin-bottom:6px}
+.contact-info .row{display:flex;gap:12px;align-items:flex-start;margin-top:20px;font-size:.92rem;color:var(--ink-soft)}
+.contact-info .row svg{width:20px;height:20px;stroke:var(--berry);fill:none;stroke-width:1.6;flex:none;margin-top:2px}
+.faq{border-bottom:1px solid var(--line)}
+.faq button{width:100%;background:none;border:none;text-align:left;padding:20px 4px;font-family:'Fraunces';font-size:1.15rem;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.faq .pm{position:relative;width:20px;height:20px;flex:none}
+.faq .pm::before,.faq .pm::after{content:"";position:absolute;background:var(--berry);border-radius:2px}
+.faq .pm::before{top:9px;left:0;width:20px;height:2px}.faq .pm::after{top:0;left:9px;width:2px;height:20px;transition:transform .3s var(--ease)}
+.faq.open .pm::after{transform:scaleY(0)}
+.faq .ans{max-height:0;overflow:hidden;transition:max-height .35s var(--ease);color:var(--ink-soft);font-size:.94rem}
+.faq .ans p{margin:0;padding:0 4px 20px}
+.cartp{display:grid;grid-template-columns:1.4fr .6fr;gap:44px;align-items:start;padding:20px 0 70px}
+.cart-list{border-top:1px solid var(--line)}
+.ci{display:grid;grid-template-columns:88px 1fr auto;gap:18px;padding:22px 0;border-bottom:1px solid var(--line);align-items:center}
+.ci img{width:88px;height:110px;object-fit:cover;border-radius:8px}
+.ci h3{font-size:1.2rem;margin-bottom:3px}.ci .m{font-size:.84rem;color:var(--ink-soft)}
+.ci .rm{background:none;border:none;color:var(--ink-soft);font-size:.78rem;text-decoration:underline;cursor:pointer;padding:0;margin-top:8px}.ci .rm:hover{color:var(--berry)}
+.ci .qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:100px;margin-top:8px}
+.ci .qty button{width:34px;height:32px;background:none;border:none;cursor:pointer;font-size:1.05rem;color:var(--ink)}.ci .qty button:hover{color:var(--berry)}
+.ci .qty span{min-width:26px;text-align:center;font-weight:600;font-size:.9rem}
+.ci .lp{font-family:'Fraunces';font-size:1.2rem;text-align:right}
+.summary{background:var(--oat-deep);border-radius:var(--radius);padding:30px;position:sticky;top:96px}
+.summary h3{font-size:1.4rem;margin-bottom:18px}
+.summary .r{display:flex;justify-content:space-between;margin-bottom:12px;font-size:.94rem;color:var(--ink-soft)}
+.summary .r.tot{color:var(--ink);font-weight:700;font-size:1.1rem;border-top:1px solid var(--line);padding-top:14px;margin-top:6px}
+.summary .btn{width:100%;margin-top:16px}
+.summary .ship{font-size:.82rem;color:var(--ink-soft);text-align:center;margin-top:12px}
+.cart-empty{text-align:center;padding:70px 20px;color:var(--ink-soft)}
+footer{background:var(--oat-deep);border-top:1px solid var(--line);padding:56px 0 28px;margin-top:20px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:34px}
+.foot-brand .brand{justify-content:flex-start;font-size:1.6rem}
+.foot-brand p{color:var(--ink-soft);font-size:.9rem;max-width:32ch;margin:12px 0 0}
+footer h4{font-family:'Inter';font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);margin:0 0 16px}
+footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+footer ul a{color:var(--ink-soft);font-size:.9rem}footer ul a:hover{color:var(--berry)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-top:44px;padding-top:22px;border-top:1px solid var(--line);font-size:.8rem;color:var(--ink-soft)}
+.pay{display:flex;gap:8px}.pay span{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:3px 8px;font-size:.66rem;font-weight:700;color:var(--ink-soft)}
+.overlay{position:fixed;inset:0;background:rgba(44,34,51,.42);opacity:0;visibility:hidden;transition:.35s;z-index:90}.overlay.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:390px;max-width:88vw;background:var(--oat);z-index:100;transform:translateX(100%);transition:transform .4s var(--ease);display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.drawer.open{transform:translateX(0)}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;padding:22px;border-bottom:1px solid var(--line)}.drawer-head h3{font-size:1.35rem}
+.drawer-items{flex:1;overflow-y:auto;padding:8px 22px}
+.di{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.di img{width:58px;height:74px;object-fit:cover;border-radius:6px;flex:none}
+.di .di-info{flex:1;min-width:0}.di .di-info h4{font-family:'Fraunces';font-weight:500;font-size:1rem;margin:0}.di .di-info .m{font-size:.78rem;color:var(--ink-soft)}
+.di .di-price{font-weight:600;font-size:.9rem}
+.di button{background:none;border:none;color:var(--ink-soft);font-size:.74rem;cursor:pointer;text-decoration:underline;padding:0;margin-top:4px}.di button:hover{color:var(--berry)}
+.drawer-empty{color:var(--ink-soft);text-align:center;padding:60px 20px;font-size:.95rem}
+.drawer-foot{padding:20px 22px;border-top:1px solid var(--line)}.drawer-foot .row{display:flex;justify-content:space-between;font-weight:600;margin-bottom:14px}.drawer-foot .btn{width:100%}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:.85em 1.4em;border-radius:100px;font-size:.88rem;font-weight:500;opacity:0;visibility:hidden;transition:.3s;z-index:130}.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+@media (max-width:900px){.grid,.hm-grid,.info-grid,.values{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr;gap:28px}.split.rev .split-img{order:0}.contact-grid{grid-template-columns:1fr}.cartp{grid-template-columns:1fr}.summary{position:static}.size-row{grid-template-columns:repeat(2,1fr)}.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:680px){.nav-links{display:none}.nav{grid-template-columns:auto 1fr auto}.brand{grid-column:auto;justify-content:flex-start;font-size:1.55rem}.burger{display:inline-flex}.grid,.hm-grid,.info-grid,.values,.size-row{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.mobile-menu.open{display:block;position:fixed;inset:0;z-index:80;background:var(--oat);padding:90px 32px}.mobile-menu a{display:block;font-family:'Fraunces';font-size:2rem;padding:14px 0;border-bottom:1px solid var(--line)}.mm-close{position:absolute;top:26px;right:24px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.btn:hover,.card:hover,.rel-card:hover{transform:none}}
+</style></head><body>
+<div class="announce">Free worldwide shipping over <b>$75</b> · Each print hand-finished &amp; one of a kind</div>
+<header><div class="wrap"><nav class="nav">
+<button class="icon-btn burger" aria-label="Menu" onclick="toggleMenu(true)"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+<div class="nav-links"><a href="mianah-shop.html">Shop</a><a href="mianah-sizes.html" class="active">Sizes</a><a href="mianah-about.html">About</a><a href="mianah-contact.html">Contact</a></div>
+<a href="mianah-home.html" class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><g fill="var(--pink-bright)"><ellipse cx="16" cy="8" rx="3.6" ry="6.2"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(72 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(144 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(216 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(288 16 16)"/></g><circle cx="16" cy="16" r="3.4" fill="var(--lilac-deep)"/></svg>Mianah</a>
+<div class="nav-right">
+<select class="cur-select" aria-label="Currency" onchange="setCurrency(this.value)"><option value="USD">$ USD</option><option value="EUR">&euro; EUR</option><option value="GBP">&pound; GBP</option><option value="AED">AED</option></select>
+<a class="icon-btn" href="mianah-cart.html" aria-label="Basket"><svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="cart-count" id="cartCount" style="display:none">0</span></a>
+</div></nav></div></header>
+<div class="mobile-menu" id="mobileMenu"><button class="icon-btn mm-close" aria-label="Close" onclick="toggleMenu(false)"><svg viewBox="0 0 24 24" style="width:26px;height:26px"><path d="M6 6l12 12M18 6L6 18"/></svg></button><a href="mianah-shop.html" onclick="toggleMenu(false)">Shop</a><a href="mianah-sizes.html" onclick="toggleMenu(false)">Sizes</a><a href="mianah-about.html" onclick="toggleMenu(false)">About</a><a href="mianah-contact.html" onclick="toggleMenu(false)">Contact</a></div>
+
+<section class="phero"><span class="eyebrow">Sizes &amp; pricing</span><h1>Four sizes. One easy <em>choice</em>.</h1><p>Every Mianah print comes in the same four standard sizes, so all you decide is how big the love gets. Prices update to your currency automatically.</p></section>
+<section class="sec"><div class="wrap"><div class="size-row"><div class="size-card"><div class="size-vis" style="height:70px"></div><h3>A4</h3><div class="dim">21 &times; 29.7 cm</div><div class="inch">8.3 &times; 11.7 in</div><div class="px money" data-usd="35" data-prefix="from "></div></div><div class="size-card"><div class="size-vis" style="height:92px"></div><h3>A3</h3><div class="dim">29.7 &times; 42 cm</div><div class="inch">11.7 &times; 16.5 in</div><div class="px money" data-usd="49" data-prefix="from "></div></div><div class="size-card"><div class="size-vis" style="height:116px"></div><h3>A2</h3><div class="dim">42 &times; 59.4 cm</div><div class="inch">16.5 &times; 23.4 in</div><div class="px money" data-usd="69" data-prefix="from "></div></div><div class="size-card"><div class="size-vis" style="height:140px"></div><h3>A1</h3><div class="dim">59.4 &times; 84 cm</div><div class="inch">23.4 &times; 33.1 in</div><div class="px money" data-usd="95" data-prefix="from "></div></div></div></div></section>
+<section class="sec" style="background:var(--oat-deep)"><div class="wrap"><div class="sec-head"><span class="eyebrow">Good to know</span><h2>Made to last for generations</h2></div><div class="info-grid">
+<div class="info-card"><h3>Archival paper</h3><p>Printed on 240gsm heavyweight cotton fine-art paper with a soft matte finish that keeps colours vivid for decades.</p></div>
+<div class="info-card"><h3>True-to-art colour</h3><p>Giclee printing captures every bold, saturated brushstroke &mdash; screens can vary slightly from the finished paper.</p></div>
+<div class="info-card"><h3>Hand-finished</h3><p>Each print gets a surprise touch of gold, glitter or gems before it ships. One of a kind, every time.</p></div>
+</div></div></section>
+<section class="sec"><div class="wrap"><div class="band"><h2>Not sure which size?</h2><p>A4 is lovely on a shelf or gallery wall, A3 is our most-loved nursery size, and A2&ndash;A1 make a real statement above a crib or cot.</p><a href="mianah-shop.html" class="btn btn-primary">Shop the collection</a></div></div></section>
+
+<footer><div class="wrap"><div class="foot-grid">
+<div class="foot-brand"><div class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><g fill="var(--pink-bright)"><ellipse cx="16" cy="8" rx="3.6" ry="6.2"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(72 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(144 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(216 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(288 16 16)"/></g><circle cx="16" cy="16" r="3.4" fill="var(--lilac-deep)"/></svg>Mianah</div><p>Bold, blossoming art prints celebrating mothers and their little ones. Shipped worldwide.</p></div>
+<div><h4>Shop</h4><ul><li><a href="mianah-shop.html">All prints</a></li><li><a href="mianah-sizes.html">Sizes &amp; pricing</a></li><li><a href="mianah-cart.html">Basket</a></li></ul></div>
+<div><h4>Help</h4><ul><li><a href="mianah-contact.html">Contact us</a></li><li><a href="mianah-contact.html">Shipping</a></li><li><a href="mianah-contact.html">Returns</a></li></ul></div>
+<div><h4>Mianah</h4><ul><li><a href="mianah-about.html">Our story</a></li><li><a href="#">Instagram</a></li><li><a href="#">Pinterest</a></li></ul></div>
+</div><div class="foot-bottom"><span>&copy; 2026 Mianah &middot; Shipping worldwide</span><div class="pay"><span>VISA</span><span>MC</span><span>AMEX</span><span>APPLE&nbsp;PAY</span><span>G&nbsp;PAY</span></div></div></div></footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer" aria-label="Basket"><div class="drawer-head"><h3>Your basket</h3><button class="icon-btn" aria-label="Close" onclick="closeCart()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+<div class="drawer-items" id="drawerItems"></div>
+<div class="drawer-foot" id="drawerFoot" style="display:none"><div class="row"><span>Subtotal</span><span id="subtotal"></span></div><a href="mianah-cart.html" class="btn btn-primary">View basket</a></div></aside>
+<div class="toast" id="toast"></div>
+<script>
+const CUR={USD:{s:'$',r:1},EUR:{s:'\u20ac',r:0.92},GBP:{s:'\u00a3',r:0.79},AED:{s:'AED ',r:3.67}};
+let currency='USD';
+function money(u){const c=CUR[currency];return c.s+Math.round(u*c.r);}
+function setCurrency(v){currency=v;refreshMoney();if(typeof pageRefresh==='function')pageRefresh();}
+function refreshMoney(){document.querySelectorAll('.money[data-usd]').forEach(el=>{el.textContent=(el.dataset.prefix||'')+money(+el.dataset.usd);});renderBasket();}
+const SIZES=[{k:'A4',base:35},{k:'A3',base:49},{k:'A2',base:69},{k:'A1',base:95}];
+const basket=[];
+function addItem(name,img,size,priceUSD){const ex=basket.find(b=>b.name===name&&b.size===size);if(ex){ex.qty++;}else{basket.push({name,img,size,priceUSD,qty:1});}renderBasket();showToast('Added \u201c'+name+'\u201d \u00b7 '+size);openCart();}
+function removeItem(i){basket.splice(i,1);renderBasket();}
+function renderBasket(){const count=basket.reduce((n,b)=>n+b.qty,0);const cc=document.getElementById('cartCount');if(cc){cc.textContent=count;cc.style.display=count?'flex':'none';}
+const wrap=document.getElementById('drawerItems');if(!wrap)return;const foot=document.getElementById('drawerFoot');
+if(!basket.length){wrap.innerHTML='<div class="drawer-empty">Your basket is empty.</div>';if(foot)foot.style.display='none';return;}
+wrap.innerHTML=basket.map((b,i)=>'<div class="di"><img src="'+b.img+'" alt=""><div class="di-info"><h4>'+b.name+'</h4><div class="m">Size '+b.size+' \u00b7 Qty '+b.qty+'</div><button onclick="removeItem('+i+')">Remove</button></div><div class="di-price">'+money(b.priceUSD*b.qty)+'</div></div>').join('');
+if(foot)foot.style.display='block';var st=document.getElementById('subtotal');if(st)st.textContent=money(basket.reduce((n,b)=>n+b.priceUSD*b.qty,0));}
+function openCart(){var d=document.getElementById('drawer'),o=document.getElementById('overlay');if(d)d.classList.add('open');if(o)o.classList.add('open');}
+function closeCart(){var d=document.getElementById('drawer'),o=document.getElementById('overlay');if(d)d.classList.remove('open');if(o)o.classList.remove('open');}
+function toggleMenu(o){document.getElementById('mobileMenu').classList.toggle('open',o);}
+let toastT;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200);}
+function toggleFaq(btn){const f=btn.closest('.faq');const a=f.querySelector('.ans');const open=f.classList.toggle('open');a.style.maxHeight=open?a.scrollHeight+'px':0;}
+
+refreshMoney();</script></body></html>
