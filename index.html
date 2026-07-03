@@ -31,8 +31,8 @@
 
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-weight:600;font-size:.95rem;padding:.85em 1.5em;border-radius:100px;border:1.5px solid transparent;cursor:pointer;transition:transform .25s var(--ease),background .25s,color .25s,border-color .25s;font-family:'Inter'}
   .btn:hover{transform:translateY(-2px)}
-  .btn-primary{background:var(--berry-deep);color:#fff}
-  .btn-primary:hover{background:#C8462F}
+  .btn-primary{background:#F5379A;color:#fff}
+  .btn-primary:hover{background:#D4177E}
   .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
   .btn-ghost:hover{background:var(--ink);color:var(--oat)}
   .btn-light{background:#fff;color:var(--ink)}
@@ -360,7 +360,7 @@
       <h1>Mama in <em>Bloom</em><svg class="h1-bloom" viewBox="0 0 32 32" aria-hidden="true"><g fill="var(--pink-bright)"><ellipse cx="16" cy="8" rx="3.6" ry="6.2"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(72 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(144 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(216 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(288 16 16)"/></g><circle cx="16" cy="16" r="3.4" fill="var(--lilac-deep)"/></svg></h1>
       <p class="lead">Bold, blossoming portraits of mothers and their little ones — painted in full colour, printed to keep.</p>
       <div class="hero-cta">
-        <a href="#collection" class="btn btn-bw">Shop prints</a>
+        <a href="mianah-shop.html" class="btn btn-bw">Shop prints</a>
         <a href="#sizes" class="btn btn-ghost">See the sizes</a>
       </div>
       <div class="hero-rate"><span class="st">★★★★★</span> Loved by 4,000+ families in 40+ countries</div>
@@ -401,7 +401,7 @@
       <span class="save-badge">Save 15%</span>
       <h2>Build your gallery wall</h2>
       <p>Pick any three Mianah prints and we'll take 15% off the set — a whole wall of colour for the nursery, hallway, or wherever love lives.</p>
-      <a href="#collection" class="btn btn-primary">Start your set</a>
+      <a href="mianah-shop.html" class="btn btn-primary">Start your set</a>
     </div>
     <div class="bundle-vis reveal">
       <div class="bframe"><img data-img="img4" alt=""></div>
@@ -500,7 +500,7 @@
       <figure class="gift-card reveal"><img data-img="img21" alt="Marigold Morning print in a warm wooden nursery"><figcaption>Marigold Morning, above the crib</figcaption></figure>
     </div>
     <div class="gift-cta reveal">
-      <a href="#collection" class="btn btn-primary">Find their print</a>
+      <a href="mianah-shop.html" class="btn btn-primary">Find their print</a>
       <a href="#bundle" class="btn btn-ghost">Gift a gallery set</a>
     </div>
   </div>
@@ -615,7 +615,7 @@
     const el=document.createElement('div');
     el.className='card reveal';
     el.innerHTML=`
-      <div class="card-art" onclick="openQuick('${p.id}')"><img src="${p.img}" alt="${p.name} — Mianah motherhood print"><span class="quick-pill">Quick view · see it on a wall</span></div>
+      <div class="card-art" onclick="location.href='mianah-product.html?id=${p.id}'"><img src="${p.img}" alt="${p.name} — Mianah motherhood print"><span class="quick-pill">View the print</span></div>
       <div class="card-body">
         <div class="cat">${p.cat}</div>
         <h3>${p.name}</h3>
