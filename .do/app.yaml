@@ -1,5 +1,10 @@
 name: mianah
 region: lon
+domains:
+  - domain: www.mianah.com
+    type: PRIMARY
+  - domain: mianah.com
+    type: ALIAS
 static_sites:
   - name: mianah-web
     git:

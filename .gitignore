@@ -1,3 +1,5 @@
 .DS_Store
 _incoming/
 *.zip
+_new_products.json
+_manifest.json

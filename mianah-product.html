@@ -316,6 +316,7 @@
 </aside>
 <div class="toast" id="toast"></div>
 
+<script src="products.js"></script>
 <script>
   const CUR={USD:{s:'$',r:1},EUR:{s:'€',r:0.92},GBP:{s:'£',r:0.79},AED:{s:'AED ',r:3.67}};
   let currency='USD';
@@ -370,6 +371,22 @@
   let toastT;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200);}
 
   refresh();
+</script>
+<script>
+(function(){
+  var id=new URLSearchParams(location.search).get('id');
+  if(!id||!window.MIANAH_PRODUCTS)return;
+  var p=window.MIANAH_PRODUCTS.find(function(x){return x.id===id;});
+  if(!p)return;
+  document.title=p.name+' \u2014 Mianah';
+  var mi=document.getElementById('mainImg'); if(mi){mi.src=p.img;mi.alt=p.name+' \u2014 Mianah motherhood print';}
+  var cat=document.querySelector('.info .cat'); if(cat)cat.textContent=p.cat+' Collection';
+  var h1=document.querySelector('.info h1'); if(h1)h1.textContent=p.name;
+  var rt=document.querySelector('.info .rating'); if(rt)rt.innerHTML='<span class="st">\u2605\u2605\u2605\u2605\u2605</span> '+p.rating+' <a href="#reviews">\u00b7 '+p.count+' reviews</a>';
+  var ld=document.querySelector('.info .lede'); if(ld)ld.textContent=p.desc;
+  var cb=document.querySelector('.crumb'); if(cb&&cb.lastChild)cb.lastChild.textContent=p.name;
+  var th=document.getElementById('thumbs'); if(th)th.innerHTML='<button class="on"><img src="'+p.img+'" alt="'+p.name+'"></button>';
+})();
 </script>
 </body>
 </html>
