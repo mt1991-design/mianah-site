@@ -2,10 +2,9 @@ name: mianah
 region: lon
 static_sites:
   - name: mianah-web
+    git:
+      repo_clone_url: https://github.com/mt1991-design/mianah-site.git
+      branch: main
     source_dir: /
     index_document: index.html
     catchall_document: mianah-home.html
-    github:
-      repo: OWNER/mianah-site
-      branch: main
-      deploy_on_push: true
