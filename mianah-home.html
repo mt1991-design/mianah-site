@@ -605,7 +605,7 @@
   const SIZES=[{k:'A4',base:35},{k:'A3',base:49},{k:'A2',base:69},{k:'A1',base:95}];
   const PRODUCTS=window.MIANAH_HOME;
   const cardSize={};      // product -> size index (card)
-  const basket=[];
+  const basket=JSON.parse(localStorage.getItem('mianah_basket')||'[]');
 
   /* ---------- Build cards ---------- */
   const grid=document.getElementById('productGrid');
@@ -633,18 +633,19 @@
   /* ---------- Basket ---------- */
   function pushItem(p,size,priceUSD){
     const label=size;
-    const ex=basket.find(b=>b.id===p.id&&b.label===label);
-    if(ex){ex.qty++;}else{basket.push({id:p.id,name:p.name,img:p.img,label,priceUSD,qty:1});}
+    const ex=basket.find(b=>b.id===p.id&&b.size===label);
+    if(ex){ex.qty++;}else{basket.push({id:p.id,name:p.name,img:p.img,size:label,priceUSD,qty:1});}
     renderBasket();
   }
   function removeItem(i){basket.splice(i,1);renderBasket();}
-  function renderBasket(){
+  function saveBasket(){try{localStorage.setItem('mianah_basket',JSON.stringify(basket));}catch(e){}}
+function renderBasket(){saveBasket();
     const count=basket.reduce((n,b)=>n+b.qty,0);
     const cc=document.getElementById('cartCount');cc.textContent=count;cc.style.display=count?'flex':'none';
     const wrap=document.getElementById('drawerItems'),foot=document.getElementById('drawerFoot');
     if(!basket.length){wrap.innerHTML='<div class="drawer-empty">Your basket is empty.<br>Pick a print you love.</div>';foot.style.display='none';}
     else{
-      wrap.innerHTML=basket.map((b,i)=>`<div class="di"><img src="${b.img}" alt=""><div class="di-info"><h4>${b.name}</h4><div class="m">${b.label} · Qty ${b.qty}</div><button onclick="removeItem(${i})">Remove</button></div><div class="di-price">${money(b.priceUSD*b.qty)}</div></div>`).join('');
+      wrap.innerHTML=basket.map((b,i)=>`<div class="di"><img src="${b.img}" alt=""><div class="di-info"><h4>${b.name}</h4><div class="m">${b.size} · Qty ${b.qty}</div><button onclick="removeItem(${i})">Remove</button></div><div class="di-price">${money(b.priceUSD*b.qty)}</div></div>`).join('');
       foot.style.display='block';
       document.getElementById('subtotal').textContent=money(basket.reduce((n,b)=>n+b.priceUSD*b.qty,0));
     }
