@@ -732,5 +732,5 @@ function renderBasket(){saveBasket();
   /* init */
   refreshPrices();setAnnounce(0,true);renderBasket();
 </script>
-</body>
+<script>if(location.search.indexOf('order=success')>-1){try{localStorage.removeItem('mianah_basket');}catch(e){}var cc=document.getElementById('cartCount');if(cc){cc.textContent='0';cc.style.display='none';}setTimeout(function(){if(window.showToast)showToast('\ud83c\udf38 Thank you! Your order is confirmed \u2014 a receipt is on its way to your email.');},500);}</script></body>
 </html>
