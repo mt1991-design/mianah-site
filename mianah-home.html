@@ -610,8 +610,8 @@
   /* ---------- Build cards ---------- */
   const grid=document.getElementById('productGrid');
   PRODUCTS.forEach(p=>{
-    cardSize[p.id]=1;
-    const chips=SIZES.map((s,i)=>`<button class="chip" aria-pressed="${i===1}" onclick="pickCard('${p.id}',${i},this)">${s.k}</button>`).join('');
+    cardSize[p.id]=0;
+    const chips=SIZES.map((s,i)=>`<button class="chip" aria-pressed="${i===0}" onclick="pickCard('${p.id}',${i},this)">${s.k}</button>`).join('');
     const el=document.createElement('div');
     el.className='card reveal';
     el.innerHTML=`
