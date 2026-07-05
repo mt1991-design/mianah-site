@@ -426,7 +426,7 @@
       <div class="size-card reveal"><div class="size-vis" style="height:116px"></div><h3>A2</h3><div class="dim">42 × 59.4 cm</div><div class="px money" data-usd="69" data-prefix="from "></div></div>
       <div class="size-card reveal"><div class="size-vis" style="height:140px"></div><h3>A1</h3><div class="dim">59.4 × 84 cm</div><div class="px money" data-usd="95" data-prefix="from "></div></div>
     </div>
-    <p class="sizes-note reveal">Every print is <b>made to order</b> on archival fine-art paper and shipped worldwide.</p>
+    <p class="sizes-note reveal">Every print is <b>made to order</b> and shipped worldwide.</p>
   </div>
 </section>
 
@@ -524,7 +524,7 @@
     <div class="sec-head reveal"><span class="eyebrow">Good to know</span><h2>Questions, answered</h2></div>
     <div class="faq-wrap">
       <div class="faq reveal"><button onclick="toggleFaq(this)"><span>Do you ship internationally?</span><span class="pm"></span></button><div class="ans"><p>Yes — Mianah ships worldwide. Delivery within the UAE is free; international shipping is a flat $50, with tracked delivery to your door.</p></div></div>
-      <div class="faq reveal"><button onclick="toggleFaq(this)"><span>What paper do you print on?</span><span class="pm"></span></button><div class="ans"><p>Every print is made to order on heavyweight archival fine-art paper with a soft matte finish, so the colours stay vivid for generations.</p></div></div>
+      <div class="faq reveal"><button onclick="toggleFaq(this)"><span>What paper do you print on?</span><span class="pm"></span></button><div class="ans"><p>Every print is made to order with archival pigment inks and a soft matte finish, so the colours stay vivid for generations.</p></div></div>
       <div class="faq reveal"><button onclick="toggleFaq(this)"><span>How will my print arrive?</span><span class="pm"></span></button><div class="ans"><p>Each print ships rolled in a sturdy protective tube (or flat for smaller sizes), wrapped with care so it reaches you in perfect condition — anywhere in the world.</p></div></div>
       <div class="faq reveal"><button onclick="toggleFaq(this)"><span>How long until it arrives?</span><span class="pm"></span></button><div class="ans"><p>Prints are made to order in 2–4 days, then shipped. Most orders arrive within 1–2 weeks depending on your country.</p></div></div>
       <div class="faq reveal"><button onclick="toggleFaq(this)"><span>What's your return policy?</span><span class="pm"></span></button><div class="ans"><p>If your print arrives damaged or isn't quite right, contact us within 30 days and we'll reprint or refund it — no fuss.</p></div></div>
@@ -699,7 +699,7 @@ function renderBasket(){saveBasket();
   function toggleMenu(o){document.getElementById('mobileMenu').classList.toggle('open',o);}
 
   /* ---------- Rotating announcement ---------- */
-  const ANN=[()=>`Free UAE delivery · we ship worldwide`,()=>`Made to order on archival fine-art paper`,()=>`New prints in bloom every season`];
+  const ANN=[()=>`Free UAE delivery · we ship worldwide`,()=>`Made to order · gallery quality`,()=>`New prints in bloom every season`];
   let annIdx=0;
   function setAnnounce(i,instant){const el=document.getElementById('announceText');if(instant){el.innerHTML=ANN[i]();return;}el.style.opacity=0;setTimeout(()=>{el.innerHTML=ANN[i]();el.style.opacity=1;},450);}
   setInterval(()=>{annIdx=(annIdx+1)%ANN.length;setAnnounce(annIdx,false);},4200);
