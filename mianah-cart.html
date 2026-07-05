@@ -156,7 +156,7 @@ html{background:var(--oat)}.petals{position:fixed;inset:0;pointer-events:none;z-
 
 <section class="phero" style="padding-bottom:0"><span class="eyebrow">Your basket</span><h1>Almost <em>yours</em></h1></section>
 <section class="sec"><div class="wrap"><div class="cartp" id="cartWrap"><div class="cart-list" id="cartList"></div>
-<div class="summary"><h3>Order summary</h3><div class="r"><span>Subtotal</span><span id="sSub">$0</span></div><div class="r"><span>Shipping</span><span id="sShip">&mdash;</span></div><div class="r tot"><span>Total</span><span id="sTot">$0</span></div><a href="#" class="btn btn-primary" id="coBtn" onclick="mianahCheckout();return false;">Checkout</a><div class="ship" id="sMsg"></div><div style="text-align:center;margin-top:14px"><a href="mianah-shop.html" style="font-size:.86rem;color:var(--ink-soft);text-decoration:underline">Continue shopping</a></div></div>
+<div class="summary"><h3>Order summary</h3><div class="r"><span>Subtotal</span><span id="sSub">$0</span></div><div class="r"><span>Ship to</span><select id="shipRegion" onchange="setRegion(this.value)" style="font:inherit;font-size:.85rem;font-weight:600;color:var(--ink);background:transparent;border:1.4px solid var(--line);border-radius:10px;padding:.3em .6em;cursor:pointer"><option value="uae">United Arab Emirates</option><option value="intl">International</option></select></div><div class="r"><span>Shipping</span><span id="sShip">&mdash;</span></div><div class="r tot"><span>Total</span><span id="sTot">$0</span></div><a href="#" class="btn btn-primary" id="coBtn" onclick="mianahCheckout();return false;">Checkout</a><div class="ship" id="sMsg"></div><div style="text-align:center;margin-top:14px"><a href="mianah-shop.html" style="font-size:.86rem;color:var(--ink-soft);text-decoration:underline">Continue shopping</a></div></div>
 </div></div></section>
 
 <footer><div class="wrap"><div class="foot-grid">
@@ -181,7 +181,7 @@ const SIZES=[{k:'A4',base:35},{k:'A3',base:49},{k:'A2',base:69},{k:'A1',base:95}
 const basket=JSON.parse(localStorage.getItem('mianah_basket')||'[]');
 function addItem(name,img,size,priceUSD){const ex=basket.find(b=>b.name===name&&b.size===size);if(ex){ex.qty++;}else{basket.push({name,img,size,priceUSD,qty:1});}renderBasket();showToast('Added \u201c'+name+'\u201d \u00b7 '+size);openCart();}
 function removeItem(i){basket.splice(i,1);renderBasket();}
-function saveBasket(){try{localStorage.setItem('mianah_basket',JSON.stringify(basket));}catch(e){}}
+var shipRegion=localStorage.getItem('mianah_region')||'uae';function setRegion(v){shipRegion=v;try{localStorage.setItem('mianah_region',v);}catch(e){}renderCart();}function saveBasket(){try{localStorage.setItem('mianah_basket',JSON.stringify(basket));}catch(e){}}
 function renderBasket(){saveBasket();const count=basket.reduce((n,b)=>n+b.qty,0);const cc=document.getElementById('cartCount');if(cc){cc.textContent=count;cc.style.display=count?'flex':'none';}
 const wrap=document.getElementById('drawerItems');if(!wrap)return;const foot=document.getElementById('drawerFoot');
 if(!basket.length){wrap.innerHTML='<div class="drawer-empty">Your basket is empty.</div>';if(foot)foot.style.display='none';return;}
@@ -198,14 +198,14 @@ document.querySelectorAll('img[data-img]').forEach(function(el){el.src=IMAGES[el
 const cart=basket;
 function cQty(i,d){cart[i].qty=Math.max(1,cart[i].qty+d);renderCart();}
 function cRemove(i){cart.splice(i,1);renderCart();}
-const MIANAH_FN='https://faas-lon1-917a94a7.doserverless.co/api/v1/web/fn-4c454f73-367d-4894-a1da-59e827df7fbe/checkout/session';async function mianahCheckout(){var items=(cart||[]).filter(Boolean).map(function(b){return {name:b.name,img:b.img,size:b.size,qty:b.qty};});if(!items.length){showToast('Your basket is empty');return;}var btn=document.getElementById('coBtn');if(btn){btn.dataset.t=btn.textContent;btn.textContent='Redirecting to secure checkout…';btn.style.pointerEvents='none';btn.style.opacity='.75';}try{var r=await fetch(MIANAH_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items,origin:location.origin,currency:(localStorage.getItem('mianah_cur')||'AED')})});var d=await r.json();if(d&&d.url){location.href=d.url;return;}showToast(d&&d.error?d.error:'Could not start checkout');}catch(e){showToast('Checkout unavailable, please try again');}if(btn){btn.textContent=btn.dataset.t||'Checkout';btn.style.pointerEvents='';btn.style.opacity='';}}function renderCart(){saveBasket();var list=document.getElementById('cartList');var wrap=document.getElementById('cartWrap');
+const MIANAH_FN='https://faas-lon1-917a94a7.doserverless.co/api/v1/web/fn-4c454f73-367d-4894-a1da-59e827df7fbe/checkout/session';async function mianahCheckout(){var items=(cart||[]).filter(Boolean).map(function(b){return {name:b.name,img:b.img,size:b.size,qty:b.qty};});if(!items.length){showToast('Your basket is empty');return;}var btn=document.getElementById('coBtn');if(btn){btn.dataset.t=btn.textContent;btn.textContent='Redirecting to secure checkout…';btn.style.pointerEvents='none';btn.style.opacity='.75';}try{var r=await fetch(MIANAH_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items,origin:location.origin,currency:(localStorage.getItem('mianah_cur')||'AED'),region:shipRegion})});var d=await r.json();if(d&&d.url){location.href=d.url;return;}showToast(d&&d.error?d.error:'Could not start checkout');}catch(e){showToast('Checkout unavailable, please try again');}if(btn){btn.textContent=btn.dataset.t||'Checkout';btn.style.pointerEvents='';btn.style.opacity='';}}function renderCart(){saveBasket();var list=document.getElementById('cartList');var wrap=document.getElementById('cartWrap');
 if(!cart.length){wrap.innerHTML='<div class="cart-empty" style="grid-column:1/-1"><p>Your basket is empty.</p><a href="mianah-shop.html" class="btn btn-primary">Shop prints</a></div>';return;}
 list.innerHTML=cart.map(function(b,i){return '<div class="ci"><img src="'+b.img+'" alt=""><div><h3>'+b.name+'</h3><div class="m">Size '+b.size+'</div><div class="qty"><button onclick="cQty('+i+',-1)">\u2013</button><span>'+b.qty+'</span><button onclick="cQty('+i+',1)">+</button></div><br><button class="rm" onclick="cRemove('+i+')">Remove</button></div><div class="lp">'+money(b.priceUSD*b.qty)+'</div></div>';}).join('');
 var sub=cart.reduce(function(n,b){return n+b.priceUSD*b.qty;},0);
 document.getElementById('sSub').textContent=money(sub);
-var free=sub>=75;document.getElementById('sShip').textContent=free?'Free':money(8);
-document.getElementById('sTot').textContent=money(free?sub:sub+8);
-document.getElementById('sMsg').innerHTML=free?'\ud83c\udf38 You\'ve unlocked free worldwide shipping':'You\'re '+money(75-sub)+' away from free shipping';}
+var intl=(shipRegion==='intl');var ship=intl?50:0;var _sr=document.getElementById('shipRegion');if(_sr)_sr.value=shipRegion;document.getElementById('sShip').textContent=ship?money(ship):'Free';
+document.getElementById('sTot').textContent=money(sub+ship);
+document.getElementById('sMsg').innerHTML=intl?('\ud83c\udf0d Flat '+money(50)+' worldwide delivery'):'\ud83c\udded\ud83c\udde6 Free delivery within the UAE';}
 function pageRefresh(){renderCart();}
 renderCart();
 
