@@ -204,7 +204,7 @@ refreshMoney();</script><script>(function(){if(window.matchMedia&&window.matchMe
   document.getElementById('fCat').textContent='Kids '+p.type;
   document.getElementById('fTitle').textContent=p.name;
   document.getElementById('fFinish').textContent=p.finish+' · soft '+p.material;
-  document.getElementById('fPrice').setAttribute('data-usd',p.priceUSD);
+  var _fp=document.getElementById('fPrice');_fp.setAttribute('data-usd',p.priceUSD);_fp.textContent=(typeof money==='function'?money(p.priceUSD):('AED '+p.aed));
   document.getElementById('fDesc').textContent=p.desc;
   document.getElementById('fImg').src=p.img; document.getElementById('fImg').alt=p.finish+' '+p.type.toLowerCase()+' for kids — Mianah nursery furniture UAE';
   document.getElementById('tRoomI').src=p.img; document.getElementById('tWhiteI').src=p.img2;
