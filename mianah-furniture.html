@@ -213,11 +213,12 @@ var FP=null, FQ=1;
   var mi=document.getElementById('fImg');mi.src=p.img;mi.alt=p.finish+' '+p.type.toLowerCase()+' for kids — Mianah nursery furniture UAE';mi.title='Click to enlarge';
   mi.onclick=function(){document.getElementById('flbImg').src=mi.src;document.getElementById('flb').classList.add('open');};
   document.getElementById('tRoomI').src=p.img;document.getElementById('tWhiteI').src=p.img2;
+  if(!p.img2||p.img2===p.img){document.getElementById('tWhite').style.display='none';document.getElementById('tRoom').style.display='none';}
   document.getElementById('fSpecs').innerHTML='<li><b>Dimensions</b> · '+p.dims+'</li>'+
     '<li><b>Fabric</b> · child-friendly '+p.material+'</li>'+
     '<li><b>Cushions</b> · scatter cushions included</li>'+
     '<li><b>Made for</b> · babies, toddlers &amp; little ones</li>';
-  var COL={lilac:'#C9A0DC',babypink:'#F1C0CB',babyblue:'#A9CFE2',navy:'#2A3350',whitevelvet:'#EFEBE4',taupe:'#6E5240','boucle-beige':'#D8C6A6','boucle-white':'#EFE9DE',chenille:'#D6C9B4'};
+  var COL={lilac:'#C9A0DC',babypink:'#F1C0CB',babyblue:'#A9CFE2',navy:'#2A3350',whitevelvet:'#EFEBE4',taupe:'#6E5240','boucle-beige':'#D8C6A6','boucle-white':'#EFE9DE',chenille:'#D6C9B4',sage:'#AEB894',forest:'#33502F',oatmeal:'#E0D4BE',white:'#EFEBE4'};
   var sw=list.filter(function(x){return x.tkey===p.tkey;}).map(function(x){
     var xck=x.id.slice(x.tkey.length+1);
     return '<a class="fswatch'+(x.id===p.id?' on':'')+'" href="mianah-furniture.html?id='+x.id+'" title="'+x.finish+'" style="background:'+(COL[xck]||'#ccc')+'"></a>';
