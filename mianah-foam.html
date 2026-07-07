@@ -199,23 +199,26 @@ function toggleFaq(btn){const f=btn.closest('.faq');const a=f.querySelector('.an
 
 refreshMoney();</script><script>(function(){if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;var wrap=document.getElementById('petals');if(!wrap)return;var cols=['#F58A73','#F26B54','#C9B4EC','#B49BE0'];var svg=function(c){return '<svg viewBox="0 0 20 20"><path d="M10 1C6 5 4 9 10 19 16 9 14 5 10 1z" fill="'+c+'"/></svg>';};for(var i=0;i<16;i++){var p=document.createElement('div');p.className='petal';var s=10+Math.random()*16;p.style.left=Math.random()*100+'%';p.style.width=s+'px';p.style.height=s+'px';p.style.animationDuration=(9+Math.random()*9)+'s';p.style.animationDelay=(-Math.random()*12)+'s';p.style.opacity=(.35+Math.random()*.35).toFixed(2);p.innerHTML=svg(cols[i%cols.length]);wrap.appendChild(p);}})();</script><script>try{var _s=document.querySelector(".cur-select");if(_s)_s.value=(localStorage.getItem("mianah_cur")||"AED");}catch(e){}</script><script>
 var FP=null, FQ=1, FC=null;
+function foamHasSet(){try{return !!(basket&&basket.some(function(b){return String(b.id||'').indexOf('foamset-')===0;}));}catch(e){return false;}}
 (function(){
   var list=window.MIANAH_FOAM||[];
   var id=new URLSearchParams(location.search).get('id')||(list[0]&&list[0].id);
   var p=list.find(function(x){return x.id===id;})||list[0]; if(!p)return; FP=p; FC=p.colours[0];
-  document.getElementById('fName').textContent=p.name;
-  document.getElementById('fCat').textContent='Nursery foam block';
-  document.getElementById('fTitle').textContent=p.name;
+  document.getElementById('fName').textContent=p.setName;
+  document.getElementById('fCat').textContent='Nursery foam · set of 6';
+  document.getElementById('fTitle').textContent=p.setName;
   var _fr=document.getElementById('fRating'); if(_fr)_fr.textContent='5.0 · loved in UAE nurseries';
-  var _fp=document.getElementById('fPrice');_fp.setAttribute('data-usd',p.priceUSD);_fp.textContent=(typeof money==='function'?money(p.priceUSD):('AED '+p.aed));
+  var _fp=document.getElementById('fPrice');_fp.setAttribute('data-usd',p.priceUSD);
+  _fp.innerHTML=(typeof money==='function'?money(p.priceUSD):('AED '+p.aed))+' <span style="font-family:\'Inter\',sans-serif;font-size:.52em;color:var(--ink-soft);font-weight:500">· set of 6, one colour</span>';
   document.getElementById('fDesc').textContent=p.desc;
   var mi=document.getElementById('fImg');mi.title='Click to enlarge';
   mi.onclick=function(){document.getElementById('flbImg').src=mi.src;document.getElementById('flb').classList.add('open');};
   var tr=document.getElementById('tRoom'),tw=document.getElementById('tWhite');
   if(tr)tr.parentNode.style.display='none';
-  document.getElementById('fSpecs').innerHTML='<li><b>Dimensions</b> · '+p.dims+'</li>'+
+  document.getElementById('fSpecs').innerHTML='<li><b>Set</b> · six matching blocks in one colour</li>'+
+    '<li><b>Each block</b> · '+p.dims+'</li>'+
     '<li><b>Fabric</b> · soft velvet over child-safe foam</li>'+
-    '<li><b>Made for</b> · babies, toddlers &amp; little ones</li>';
+    '<li><b>Extras</b> · add single blocks (AED 199) once a set is in your basket</li>';
   document.querySelector('.fopt-label').innerHTML='Colour · <b id="fFinishName"></b>';
   function renderSw(){
     document.getElementById('fFinishName').textContent=FC.name;
@@ -223,29 +226,52 @@ var FP=null, FQ=1, FC=null;
       return '<button type="button" class="fswatch'+(c.key===FC.key?' on':'')+'" title="'+c.name+'" data-k="'+c.key+'" style="background:'+c.hex+'"></button>';
     }).join('');
   }
-  function setColour(c){FC=c;var im=document.getElementById('fImg');im.src=c.img;im.alt=c.name+' '+p.name+' — Mianah nursery foam block UAE';renderSw();}
+  function setColour(c){FC=c;var im=document.getElementById('fImg');im.src=c.img;im.alt=c.name+' '+p.name+' set of 6 — Mianah nursery foam blocks UAE';renderSw();}
   document.getElementById('fSwatches').addEventListener('click',function(e){var b=e.target.closest('.fswatch');if(!b)return;var c=p.colours.find(function(x){return x.key===b.dataset.k;});if(c)setColour(c);});
   setColour(FC);
-  document.getElementById('fName').textContent=p.name;
-  document.getElementById('fAdd').onclick=function(){addF(FQ);};
-  document.getElementById('fBuy').onclick=function(){addF(FQ);location.href='mianah-cart.html';};
+  var addBtn=document.getElementById('fAdd'); addBtn.textContent='Add set of 6 to basket';
+  addBtn.onclick=function(){addSet(FQ);};
+  document.getElementById('fBuy').onclick=function(){addSet(FQ);location.href='mianah-cart.html';};
+  // extra-single add-on (gated behind owning a set)
+  var buy=document.getElementById('fBuy');
+  var wrap=document.createElement('div'); wrap.id='fSingleWrap';
+  wrap.style.cssText='margin:16px 0 2px;padding:14px 16px;border:1px dashed var(--line);border-radius:12px';
+  var short=p.name.replace('Cloud ','').replace(' Block','').toLowerCase();
+  wrap.innerHTML='<div style="font-size:.92rem;color:var(--ink)"><b>Add extra single blocks</b> — '+(typeof money==='function'?money(p.singleUSD):('AED '+p.singleAed))+' each</div>'+
+    '<div id="fSingleNote" style="font-size:.82rem;color:var(--ink-soft);margin:4px 0 10px"></div>'+
+    '<button type="button" class="btn btn-add" id="fSingleBtn" style="width:auto;margin:0">&#43; Add one '+short+' block</button>';
+  buy.parentNode.insertBefore(wrap, buy.nextSibling);
+  document.getElementById('fSingleBtn').onclick=function(){addSingle();};
+  updateSingleGate();
   document.title=p.title;
   function meta(n,c){var m=document.querySelector('meta[name="'+n+'"]');if(!m){m=document.createElement('meta');m.name=n;document.head.appendChild(m);}m.content=c;}
   meta('description',p.meta); meta('keywords',p.keywords);
-  var ld={"@context":"https://schema.org","@type":"Product","name":p.name,
+  var ld={"@context":"https://schema.org","@type":"Product","name":p.setName,
     "image":[location.origin+'/'+p.img],"description":p.meta,
-    "brand":{"@type":"Brand","name":"Mianah"},"category":"Nursery foam play block / Kids furniture",
+    "brand":{"@type":"Brand","name":"Mianah"},"category":"Nursery foam play blocks / Kids furniture",
     "aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"19"},
     "offers":{"@type":"Offer","priceCurrency":"AED","price":String(p.aed),
       "availability":"https://schema.org/InStock","url":location.href,
       "areaServed":"AE","seller":{"@type":"Organization","name":"Mianah"}}};
   var sc=document.createElement('script');sc.type='application/ld+json';sc.textContent=JSON.stringify(ld);document.head.appendChild(sc);
 })();
+function updateSingleGate(){
+  var btn=document.getElementById('fSingleBtn'), note=document.getElementById('fSingleNote'); if(!btn)return;
+  var ok=foamHasSet();
+  btn.disabled=!ok; btn.style.opacity=ok?'1':'.45'; btn.style.cursor=ok?'pointer':'not-allowed';
+  if(note) note.textContent=ok?"You've added a set — add as many extra singles as you like.":"Available once you've added a set of 6 to your basket.";
+}
 function fStep(d){FQ=Math.max(1,Math.min(20,(parseInt(document.getElementById('fQty').value,10)||1)+d));document.getElementById('fQty').value=FQ;}
-function addF(qty){if(!FP||!FC)return;qty=Math.max(1,Math.min(20,parseInt(qty,10)||1));
-  var pid=FP.id+'-'+FC.key;
+function addSet(qty){if(!FP||!FC)return;qty=Math.max(1,Math.min(20,parseInt(qty,10)||1));
+  var pid='foamset-'+FP.key+'-'+FC.key;
   var ex=basket.find(function(b){return b.id===pid;});
-  if(ex){ex.qty+=qty;}else{basket.push({name:FP.name,img:FC.img,size:FC.name,priceUSD:FP.priceUSD,qty:qty,id:pid});}
-  renderBasket();showToast('Added '+qty+'× '+FP.name+' — '+FC.name);openCart();}
+  if(ex){ex.qty+=qty;}else{basket.push({name:FP.name+' — Set of 6',img:FC.img,size:FC.name+' · set of 6',priceUSD:FP.priceUSD,qty:qty,id:pid});}
+  renderBasket();showToast('Added '+qty+'× set of 6 — '+FP.name+' ('+FC.name+')');openCart();updateSingleGate();}
+function addSingle(){if(!FP||!FC)return;
+  if(!foamHasSet()){showToast('Add a set of 6 first, then you can add singles');return;}
+  var pid='foam-'+FP.key+'-'+FC.key;
+  var ex=basket.find(function(b){return b.id===pid;});
+  if(ex){ex.qty+=1;}else{basket.push({name:FP.name+' (single block)',img:FC.img,size:FC.name+' · single',priceUSD:FP.singleUSD,qty:1,id:pid});}
+  renderBasket();showToast('Added 1 single '+FP.name+' — '+FC.name);openCart();}
 document.addEventListener('input',function(e){if(e.target&&e.target.id==='fQty'){FQ=Math.max(1,Math.min(20,parseInt(e.target.value,10)||1));}});
 </script></body></html>
