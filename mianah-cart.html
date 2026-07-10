@@ -179,7 +179,7 @@ let currency=(localStorage.getItem('mianah_cur')||'AED');
 function money(u){const c=CUR[currency];return c.s+Math.round(u*c.r);}
 function setCurrency(v){currency=v;try{localStorage.setItem('mianah_cur',v);}catch(e){}refreshMoney();if(typeof pageRefresh==='function')pageRefresh();}
 function refreshMoney(){document.querySelectorAll('.money[data-usd]').forEach(el=>{el.textContent=(el.dataset.prefix||'')+money(+el.dataset.usd);});renderBasket();}
-const SIZES=[{k:'13 × 18 cm',base:34.88},{k:'20 × 25 cm',base:48.50},{k:'21 × 30 cm',base:62.13}];
+const SIZES=[{k:'13 × 18 cm',base:34.88},{k:'20 × 25 cm',base:48.50},{k:'21 × 29.7 cm',base:62.13}];
 const basket=JSON.parse(localStorage.getItem('mianah_basket')||'[]');
 function addItem(name,img,size,priceUSD,id){const ex=basket.find(b=>b.name===name&&b.size===size);if(ex){ex.qty++;}else{basket.push({name,img,size,priceUSD,qty:1,id:id||''});}renderBasket();showToast('Added \u201c'+name+'\u201d \u00b7 '+size);openCart();}
 function removeItem(i){basket.splice(i,1);renderBasket();}
