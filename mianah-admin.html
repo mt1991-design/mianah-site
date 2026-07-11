@@ -117,6 +117,10 @@
     </section>
 
     <section id="v-products" style="display:none">
+      <div class="panel" style="background:#fbf4fb;border-color:#f0d9ec;padding:12px 16px;font-size:.88rem">
+        This is your <b>live catalogue</b> — exactly what's on the site. To add, edit, remove, or re-price a product,
+        just message me and it updates on the site (keeping your Google ranking &amp; print protection).
+      </div>
       <div class="toolbar">
         <input id="pSearch" placeholder="Search products…" oninput="renderProducts()">
         <select id="pKind" onchange="renderProducts()">
@@ -161,6 +165,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="products.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 const SUPA="https://qygxiiawfmsfkrgmpvmm.supabase.co";
@@ -187,7 +192,8 @@ async function boot(){
   document.getElementById('login').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('who').textContent=session.user.email;
-  await Promise.all([loadEvents(),loadProducts()]);
+  loadProducts();
+  await loadEvents();
   renderOverview();
 }
 
@@ -196,9 +202,15 @@ async function loadEvents(){
   const {data,error}=await sb.from('events').select('*').gte('ts',since).order('ts',{ascending:false}).limit(50000);
   EVENTS=error?[]:(data||[]);
 }
-async function loadProducts(){
-  const {data}=await sb.from('products').select('*').order('kind').order('sort');
-  PRODUCTS=data||[];
+function loadProducts(){
+  // read the REAL live catalogue straight from the site's products.js (source of truth)
+  const home=new Set((window.MIANAH_HOME||[]).map(p=>p.id));
+  const P=[];
+  (window.MIANAH_PRODUCTS||[]).forEach(p=>P.push({id:p.id,kind:'print',name:p.name,category:p.cat,image:p.img,price_usd:34.88,featured:home.has(p.id)}));
+  (window.MIANAH_FURNITURE||[]).forEach(p=>P.push({id:p.id,kind:'furniture',name:p.name+' — '+p.finish,category:p.type,image:p.img,price_usd:p.priceUSD}));
+  (window.MIANAH_FOAM||[]).forEach(p=>P.push({id:p.id,kind:'foam',name:p.setName||p.name,category:'Foam set of 6',image:p.img,price_usd:p.priceUSD}));
+  (window.MIANAH_ORIGINALS||[]).forEach(p=>P.push({id:p.id,kind:'original',name:p.name,category:'Original painting',image:p.img,price_usd:1226.16}));
+  PRODUCTS=P;
 }
 function setRange(d,btn){RANGE=d;document.querySelectorAll('#rangeSel button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');loadEvents().then(renderOverview);}
 
@@ -244,17 +256,21 @@ function barList(id,obj,n,empty){
 }
 
 // ---------- PRODUCTS ----------
+function priceLabel(p){
+  if(p.kind==='print') return 'from AED 128';
+  if(p.price_usd==null) return '—';
+  return 'AED '+Math.round(p.price_usd*3.67).toLocaleString();
+}
 function renderProducts(){
   const q=(document.getElementById('pSearch').value||'').toLowerCase(), kind=document.getElementById('pKind').value;
   const rows=PRODUCTS.filter(p=>(!kind||p.kind===kind)&&(!q||(p.name||'').toLowerCase().includes(q)));
   document.getElementById('pCount').textContent=rows.length+' of '+PRODUCTS.length;
-  document.getElementById('productList').innerHTML=`<table><tr><th>Product</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>`+
+  document.getElementById('productList').innerHTML=`<table><tr><th>Product</th><th>Type</th><th>Price</th><th></th></tr>`+
     rows.map(p=>`<tr>
-      <td><div class="prow"><img src="${esc(p.image||'')}" onerror="this.style.visibility='hidden'"><div><b>${esc(p.name)}</b><div class="muted" style="font-size:.78rem">${esc(p.category||'')}</div></div></div></td>
+      <td><div class="prow"><img src="${esc(p.image||'')}" loading="lazy" onerror="this.style.visibility='hidden'"><div><b>${esc(p.name)}</b><div class="muted" style="font-size:.78rem">${esc(p.category||'')}</div></div></div></td>
       <td><span class="tag">${esc(p.kind)}</span></td>
-      <td>${p.price_usd!=null?('AED '+Math.round(p.price_usd*3.67)):'—'}</td>
-      <td>${p.active?'<span class="tag on">Active</span>':'<span class="tag off">Hidden</span>'}${p.featured?' <span class="tag">Home</span>':''}</td>
-      <td><button class="tab" style="padding:5px 12px" onclick="openEdit('${p.id}')">Edit</button></td>
+      <td>${priceLabel(p)}</td>
+      <td>${p.featured?'<span class="tag">On home</span>':''}</td>
     </tr>`).join('')+`</table>`;
 }
 function openEdit(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;EDIT=p;
