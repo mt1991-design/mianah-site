@@ -1,0 +1,295 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Mianah — Dashboard</title>
+<style>
+  :root{--pink:#F5379A;--ink:#2C2233;--soft:#6E6178;--line:#ece7f2;--bg:#faf7fc;--card:#fff;--berry:#F26B54;--good:#35815E}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;background:var(--bg);color:var(--ink)}
+  a{color:var(--pink)}
+  .wrap{max-width:1160px;margin:0 auto;padding:20px}
+  /* login */
+  #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .lcard{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 50px -24px rgba(60,30,80,.3);padding:34px;width:100%;max-width:380px}
+  .lcard h1{font-size:1.5rem;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  .lcard p{color:var(--soft);margin:0 0 20px;font-size:.9rem}
+  input,textarea,select{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:11px;font:inherit;background:#fff;color:var(--ink)}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--pink)}
+  label{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--soft);font-weight:600;margin:12px 0 5px}
+  .btn{background:var(--pink);color:#fff;border:none;border-radius:100px;padding:11px 20px;font:inherit;font-weight:600;cursor:pointer}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+  .flower{width:26px;height:26px}
+  .err{color:#c0392b;font-size:.85rem;margin-top:10px;min-height:1em}
+  /* app */
+  #app{display:none}
+  header.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  .top .wrap{display:flex;align-items:center;gap:14px;padding:14px 20px}
+  .top h1{font-size:1.15rem;margin:0;flex:1;display:flex;align-items:center;gap:8px}
+  .tabs{display:flex;gap:4px;flex-wrap:wrap;margin:18px 0 8px}
+  .tab{border:1.5px solid var(--line);background:#fff;border-radius:100px;padding:8px 16px;font:inherit;font-size:.9rem;font-weight:600;color:var(--soft);cursor:pointer}
+  .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .range{margin-left:auto;display:flex;gap:4px}
+  .range button{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:5px 10px;font:inherit;font-size:.82rem;cursor:pointer;color:var(--soft)}
+  .range button.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:8px 0 22px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+  .stat .n{font-size:1.9rem;font-weight:700;letter-spacing:-.02em}
+  .stat .l{color:var(--soft);font-size:.82rem;margin-top:2px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:800px){.grid2{grid-template-columns:1fr}}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}
+  .panel h3{margin:0 0 14px;font-size:1rem}
+  .bar{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:.9rem}
+  .bar .lab{width:130px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;background:#f3eef8;border-radius:6px;height:20px;overflow:hidden}
+  .bar .fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--berry));border-radius:6px}
+  .bar .val{width:44px;text-align:right;font-variant-numeric:tabular-nums;color:var(--soft)}
+  .spark{display:flex;align-items:flex-end;gap:3px;height:90px}
+  .spark div{flex:1;background:var(--pink);border-radius:3px 3px 0 0;min-height:2px;opacity:.85}
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--soft);font-size:.74rem;text-transform:uppercase;letter-spacing:.05em}
+  .muted{color:var(--soft)}
+  .tag{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:100px;background:#f3eef8;color:var(--soft);font-weight:600}
+  .tag.on{background:#e6f6ee;color:var(--good)}
+  .tag.off{background:#fdeceA;color:#c0392b}
+  .prow img{width:44px;height:44px;object-fit:cover;border-radius:8px;background:#f3eef8}
+  .prow{display:flex;align-items:center;gap:10px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+  .toolbar input,.toolbar select{width:auto}
+  /* editor modal */
+  .modal{position:fixed;inset:0;background:rgba(30,15,40,.55);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
+  .modal.open{display:flex}
+  .sheet{background:#fff;border-radius:16px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:24px}
+  .sheet h3{margin:0 0 4px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .save-row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+  .switch{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.9rem}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:100px;font-size:.9rem;opacity:0;transition:opacity .3s;z-index:40}
+  .toast.show{opacity:1}
+</style>
+
+<svg width="0" height="0" style="position:absolute"><symbol id="fl" viewBox="0 0 32 32"><g fill="#F5379A"><ellipse cx="16" cy="8" rx="3.6" ry="6.2"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(72 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(144 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(216 16 16)"/><ellipse cx="16" cy="8" rx="3.6" ry="6.2" transform="rotate(288 16 16)"/></g><circle cx="16" cy="16" r="3.4" fill="#7E5CBB"/></symbol></svg>
+
+<!-- LOGIN -->
+<div id="login">
+  <form class="lcard" onsubmit="doLogin(event)">
+    <h1><svg class="flower"><use href="#fl"/></svg> Mianah</h1>
+    <p>Owner dashboard — please sign in.</p>
+    <label>Email</label>
+    <input id="email" type="email" autocomplete="username" required>
+    <label>Password</label>
+    <input id="password" type="password" autocomplete="current-password" required>
+    <div style="margin-top:18px"><button class="btn" id="loginBtn" style="width:100%">Sign in</button></div>
+    <div class="err" id="loginErr"></div>
+  </form>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header class="top"><div class="wrap">
+    <h1><svg class="flower"><use href="#fl"/></svg> Dashboard</h1>
+    <span class="muted" id="who" style="font-size:.85rem"></span>
+    <button class="tab" onclick="signOut()">Sign out</button>
+  </div></header>
+  <div class="wrap">
+    <div class="tabs">
+      <button class="tab on" data-view="overview" onclick="showView('overview',this)">Overview</button>
+      <button class="tab" data-view="products" onclick="showView('products',this)">Products</button>
+      <button class="tab" data-view="subscribers" onclick="showView('subscribers',this)">Subscribers</button>
+      <button class="tab" data-view="messages" onclick="showView('messages',this)">Messages</button>
+      <div class="range" id="rangeSel">
+        <button data-d="7" onclick="setRange(7,this)">7d</button>
+        <button data-d="30" class="on" onclick="setRange(30,this)">30d</button>
+        <button data-d="90" onclick="setRange(90,this)">90d</button>
+      </div>
+    </div>
+
+    <section id="v-overview">
+      <div class="stats" id="statCards"></div>
+      <div class="panel"><h3>Visitors over time</h3><div class="spark" id="spark"></div></div>
+      <div class="grid2">
+        <div class="panel"><h3>Top countries</h3><div id="countries"></div></div>
+        <div class="panel"><h3>Where they came from</h3><div id="referrers"></div></div>
+      </div>
+      <div class="panel"><h3>Most viewed products</h3><div id="topProducts"></div></div>
+    </section>
+
+    <section id="v-products" style="display:none">
+      <div class="toolbar">
+        <input id="pSearch" placeholder="Search products…" oninput="renderProducts()">
+        <select id="pKind" onchange="renderProducts()">
+          <option value="">All types</option><option value="print">Prints</option>
+          <option value="furniture">Furniture</option><option value="foam">Foam</option><option value="original">Originals</option>
+        </select>
+        <span class="muted" id="pCount"></span>
+      </div>
+      <div class="panel" style="padding:6px 18px"><div id="productList"></div></div>
+    </section>
+
+    <section id="v-subscribers" style="display:none">
+      <div class="toolbar"><b id="subCount"></b><button class="btn ghost" onclick="exportSubs()">Export CSV</button></div>
+      <div class="panel"><div id="subList"></div></div>
+    </section>
+
+    <section id="v-messages" style="display:none">
+      <div class="panel"><div id="msgList"></div></div>
+    </section>
+  </div>
+</div>
+
+<!-- product editor -->
+<div class="modal" id="editModal">
+  <div class="sheet">
+    <h3 id="edTitle">Edit product</h3>
+    <div class="muted" id="edId" style="font-size:.8rem;margin-bottom:14px"></div>
+    <label>Name</label><input id="edName">
+    <div class="row2">
+      <div><label>Category</label><input id="edCat"></div>
+      <div><label>Price (USD base)</label><input id="edPrice" type="number" step="0.01"></div>
+    </div>
+    <label>Description</label><textarea id="edDesc" rows="4"></textarea>
+    <div class="switch"><input type="checkbox" id="edActive" style="width:auto"> <label style="margin:0">Active (shown in store)</label></div>
+    <div class="switch"><input type="checkbox" id="edFeat" style="width:auto"> <label style="margin:0">Featured on home</label></div>
+    <div class="save-row">
+      <button class="btn ghost" onclick="closeEdit()">Cancel</button>
+      <button class="btn" id="edSave" onclick="saveEdit()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SUPA="https://qygxiiawfmsfkrgmpvmm.supabase.co";
+const AKEY="sb_publishable_3EyP10oxjPHX4jBevXKBPQ_E15w_mCj";
+const sb=supabase.createClient(SUPA,AKEY);
+let RANGE=30, EVENTS=[], PRODUCTS=[], CURVIEW="overview", EDIT=null;
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function esc(s){return String(s==null?'':s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));}
+
+async function doLogin(e){e.preventDefault();
+  const btn=document.getElementById('loginBtn');btn.disabled=true;
+  document.getElementById('loginErr').textContent='';
+  const {error}=await sb.auth.signInWithPassword({email:email.value.trim(),password:password.value});
+  btn.disabled=false;
+  if(error){document.getElementById('loginErr').textContent=error.message;return;}
+  boot();
+}
+async function signOut(){await sb.auth.signOut();location.reload();}
+
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){document.getElementById('login').style.display='flex';document.getElementById('app').style.display='none';return;}
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('who').textContent=session.user.email;
+  await Promise.all([loadEvents(),loadProducts()]);
+  renderOverview();
+}
+
+async function loadEvents(){
+  const since=new Date(Date.now()-RANGE*864e5).toISOString();
+  const {data,error}=await sb.from('events').select('*').gte('ts',since).order('ts',{ascending:false}).limit(50000);
+  EVENTS=error?[]:(data||[]);
+}
+async function loadProducts(){
+  const {data}=await sb.from('products').select('*').order('kind').order('sort');
+  PRODUCTS=data||[];
+}
+function setRange(d,btn){RANGE=d;document.querySelectorAll('#rangeSel button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');loadEvents().then(renderOverview);}
+
+function showView(v,btn){CURVIEW=v;document.querySelectorAll('.tab[data-view]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  ['overview','products','subscribers','messages'].forEach(x=>document.getElementById('v-'+x).style.display=x===v?'':'none');
+  document.getElementById('rangeSel').style.display=v==='overview'?'':'none';
+  if(v==='products')renderProducts();
+  if(v==='subscribers')loadSubs();
+  if(v==='messages')loadMsgs();
+}
+
+// ---------- OVERVIEW ----------
+function renderOverview(){
+  const byType=t=>EVENTS.filter(e=>e.type===t);
+  const uniq=new Set(EVENTS.filter(e=>e.type==='pageview').map(e=>e.session)).size;
+  const cards=[
+    ['Visitors',uniq],['Page views',byType('pageview').length],
+    ['Product views',byType('product_view').length],['Added to cart',byType('add_to_cart').length],
+    ['Checkouts',byType('begin_checkout').length],['Purchases',byType('purchase').length]
+  ];
+  document.getElementById('statCards').innerHTML=cards.map(c=>`<div class="stat"><div class="n">${c[1]}</div><div class="l">${c[0]}</div></div>`).join('');
+  // spark: pageviews per day
+  const days=RANGE, buckets=new Array(days).fill(0), now=Date.now();
+  byType('pageview').forEach(e=>{const d=Math.floor((now-new Date(e.ts))/864e5);if(d>=0&&d<days)buckets[days-1-d]++;});
+  const mx=Math.max(1,...buckets);
+  document.getElementById('spark').innerHTML=buckets.map(v=>`<div style="height:${Math.round(v/mx*100)}%" title="${v}"></div>`).join('');
+  // countries
+  barList('countries',tally(EVENTS,'country'),8,'No data yet');
+  // referrers
+  const refs=EVENTS.filter(e=>e.type==='pageview').map(e=>{try{return e.referrer?new URL(e.referrer).hostname.replace('www.',''):'Direct';}catch(x){return 'Direct';}});
+  barList('referrers',tallyArr(refs),8,'No data yet');
+  // top products
+  const pv=tally(byType('product_view'),'product_name'), atc=tally(byType('add_to_cart'),'product_name');
+  const names=[...new Set([...Object.keys(pv),...Object.keys(atc)])].sort((a,b)=>(pv[b]||0)-(pv[a]||0)).slice(0,15);
+  document.getElementById('topProducts').innerHTML = names.length? `<table><tr><th>Product</th><th>Views</th><th>Add to cart</th></tr>`+
+    names.map(n=>`<tr><td>${esc(n||'—')}</td><td>${pv[n]||0}</td><td>${atc[n]||0}</td></tr>`).join('')+`</table>` : '<p class="muted">No product views yet — data appears as people browse.</p>';
+}
+function tally(arr,key){const o={};arr.forEach(e=>{const k=e[key];if(k)o[k]=(o[k]||0)+1;});return o;}
+function tallyArr(arr){const o={};arr.forEach(k=>{if(k)o[k]=(o[k]||0)+1;});return o;}
+function barList(id,obj,n,empty){
+  const ent=Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,n), mx=Math.max(1,...ent.map(e=>e[1]));
+  document.getElementById(id).innerHTML=ent.length? ent.map(([k,v])=>`<div class="bar"><span class="lab">${esc(k)}</span><span class="track"><span class="fill" style="width:${Math.round(v/mx*100)}%"></span></span><span class="val">${v}</span></div>`).join('') : `<p class="muted">${empty}</p>`;
+}
+
+// ---------- PRODUCTS ----------
+function renderProducts(){
+  const q=(document.getElementById('pSearch').value||'').toLowerCase(), kind=document.getElementById('pKind').value;
+  const rows=PRODUCTS.filter(p=>(!kind||p.kind===kind)&&(!q||(p.name||'').toLowerCase().includes(q)));
+  document.getElementById('pCount').textContent=rows.length+' of '+PRODUCTS.length;
+  document.getElementById('productList').innerHTML=`<table><tr><th>Product</th><th>Type</th><th>Price</th><th>Status</th><th></th></tr>`+
+    rows.map(p=>`<tr>
+      <td><div class="prow"><img src="${esc(p.image||'')}" onerror="this.style.visibility='hidden'"><div><b>${esc(p.name)}</b><div class="muted" style="font-size:.78rem">${esc(p.category||'')}</div></div></div></td>
+      <td><span class="tag">${esc(p.kind)}</span></td>
+      <td>${p.price_usd!=null?('AED '+Math.round(p.price_usd*3.67)):'—'}</td>
+      <td>${p.active?'<span class="tag on">Active</span>':'<span class="tag off">Hidden</span>'}${p.featured?' <span class="tag">Home</span>':''}</td>
+      <td><button class="tab" style="padding:5px 12px" onclick="openEdit('${p.id}')">Edit</button></td>
+    </tr>`).join('')+`</table>`;
+}
+function openEdit(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;EDIT=p;
+  edTitle.textContent=p.name;edId.textContent=p.kind+' · '+p.id;
+  edName.value=p.name||'';edCat.value=p.category||'';edPrice.value=p.price_usd!=null?p.price_usd:'';
+  edDesc.value=p.description||'';edActive.checked=!!p.active;edFeat.checked=!!p.featured;
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEdit(){document.getElementById('editModal').classList.remove('open');EDIT=null;}
+async function saveEdit(){if(!EDIT)return;const btn=document.getElementById('edSave');btn.disabled=true;
+  const patch={name:edName.value.trim(),category:edCat.value.trim(),description:edDesc.value.trim(),
+    price_usd:edPrice.value===''?null:parseFloat(edPrice.value),active:edActive.checked,featured:edFeat.checked};
+  const {error}=await sb.from('products').update(patch).eq('id',EDIT.id);
+  btn.disabled=false;
+  if(error){toast('Error: '+error.message);return;}
+  Object.assign(EDIT,patch);closeEdit();renderProducts();toast('Saved ✓ (see note about publishing)');
+}
+
+// ---------- SUBSCRIBERS ----------
+let SUBS=[];
+async function loadSubs(){const {data}=await sb.from('subscribers').select('*').order('ts',{ascending:false});SUBS=data||[];
+  document.getElementById('subCount').textContent=SUBS.length+' subscriber'+(SUBS.length!==1?'s':'');
+  document.getElementById('subList').innerHTML=SUBS.length?`<table><tr><th>Email</th><th>Source</th><th>Country</th><th>When</th></tr>`+
+    SUBS.map(s=>`<tr><td>${esc(s.email)}</td><td class="muted">${esc(s.source||'')}</td><td>${esc(s.country||'')}</td><td class="muted">${new Date(s.ts).toLocaleDateString()}</td></tr>`).join('')+`</table>`:'<p class="muted">No subscribers yet.</p>';
+}
+function exportSubs(){const rows=[['email','source','country','date'],...SUBS.map(s=>[s.email,s.source||'',s.country||'',new Date(s.ts).toISOString()])];
+  const csv=rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='mianah-subscribers.csv';a.click();}
+
+// ---------- MESSAGES ----------
+async function loadMsgs(){const {data}=await sb.from('form_submissions').select('*').order('ts',{ascending:false});const M=data||[];
+  document.getElementById('msgList').innerHTML=M.length?`<table><tr><th>When</th><th>Name</th><th>Email</th><th>Message</th></tr>`+
+    M.map(m=>`<tr><td class="muted" style="white-space:nowrap">${new Date(m.ts).toLocaleDateString()}</td><td>${esc(m.name||'')}</td><td><a href="mailto:${esc(m.email)}">${esc(m.email||'')}</a></td><td>${esc(m.message||'')}</td></tr>`).join('')+`</table>`:'<p class="muted">No messages yet.</p>';
+}
+
+// auto-login if session exists
+sb.auth.getSession().then(({data:{session}})=>{if(session)boot();});
+</script>
