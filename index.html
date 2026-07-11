@@ -695,7 +695,7 @@ function renderBasket(){saveBasket();
   /* ---------- Misc ---------- */
   let toastT;
   function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200);}
-  function signup(){const e=document.getElementById('newsEmail');if(e.value&&e.value.includes('@')){showToast('Welcome to Mianah 🌸');e.value='';}else{showToast('Please enter a valid email');}}
+  function signup(){const e=document.getElementById('newsEmail');const v=(e.value||'').trim();if(!v||v.indexOf('@')<1){showToast('Please enter a valid email');return;}showToast('Welcome to Mianah 🌸');const em=v;e.value='';if(window.msubscribe)window.msubscribe(em,'footer').then(function(r){if(window.mtrack)window.mtrack('subscribe',{});});}
   function toggleMenu(o){document.getElementById('mobileMenu').classList.toggle('open',o);}
 
   /* ---------- Rotating announcement ---------- */
@@ -730,5 +730,6 @@ function renderBasket(){saveBasket();
   /* init */
   refreshPrices();setAnnounce(0,true);renderBasket();
 </script>
-<script>if(location.search.indexOf('order=success')>-1){try{localStorage.removeItem('mianah_basket');}catch(e){}var cc=document.getElementById('cartCount');if(cc){cc.textContent='0';cc.style.display='none';}setTimeout(function(){if(window.showToast)showToast('\ud83c\udf38 Thank you! Your order is confirmed \u2014 a receipt is on its way to your email.');},500);}</script><script>try{var _s=document.querySelector(".cur-select");if(_s)_s.value=(localStorage.getItem("mianah_cur")||"AED");}catch(e){}</script></body>
+<script>if(location.search.indexOf('order=success')>-1){try{localStorage.removeItem('mianah_basket');}catch(e){}var cc=document.getElementById('cartCount');if(cc){cc.textContent='0';cc.style.display='none';}setTimeout(function(){if(window.showToast)showToast('\ud83c\udf38 Thank you! Your order is confirmed \u2014 a receipt is on its way to your email.');},500);}</script><script>try{var _s=document.querySelector(".cur-select");if(_s)_s.value=(localStorage.getItem("mianah_cur")||"AED");}catch(e){}</script><script src="mianah-analytics.js" defer></script>
+</body>
 </html>

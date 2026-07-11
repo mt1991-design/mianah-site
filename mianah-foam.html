@@ -274,4 +274,5 @@ function addSingle(){if(!FP||!FC)return;
   if(ex){ex.qty+=1;}else{basket.push({name:FP.name+' (single block)',img:FC.img,size:FC.name+' · single',priceUSD:FP.singleUSD,qty:1,id:pid});}
   renderBasket();showToast('Added 1 single '+FP.name+' — '+FC.name);openCart();}
 document.addEventListener('input',function(e){if(e.target&&e.target.id==='fQty'){FQ=Math.max(1,Math.min(20,parseInt(e.target.value,10)||1));}});
-</script></body></html>
+</script><script src="mianah-analytics.js" defer></script>
+</body></html>

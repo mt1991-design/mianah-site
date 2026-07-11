@@ -248,4 +248,5 @@ function addF(qty){if(!FP)return;qty=Math.max(1,Math.min(20,parseInt(qty,10)||1)
   renderBasket();showToast('Added '+qty+'× '+FP.name+' — '+FP.finish);openCart();}
 document.addEventListener('input',function(e){if(e.target&&e.target.id==='fQty'){FQ=Math.max(1,Math.min(20,parseInt(e.target.value,10)||1));}});
 </script>
+<script src="mianah-analytics.js" defer></script>
 </body></html>
