@@ -114,6 +114,9 @@
         <div class="panel"><h3>Where they came from</h3><div id="referrers"></div></div>
       </div>
       <div class="panel"><h3>Most viewed products</h3><div id="topProducts"></div></div>
+      <div class="panel"><h3>Every product viewed</h3><input id="prodFilter" placeholder="Filter…" oninput="renderProdDetail()" style="max-width:260px;margin-bottom:10px"><div id="prodDetail"></div></div>
+      <div class="panel"><h3>Every page visited</h3><input id="pageFilter" placeholder="Filter…" oninput="renderPageDetail()" style="max-width:260px;margin-bottom:10px"><div id="pageDetail"></div></div>
+      <div class="panel"><h3>Recent activity (live feed)</h3><div id="feed"></div></div>
     </section>
 
     <section id="v-products" style="display:none">
@@ -247,6 +250,41 @@ function renderOverview(){
   const names=[...new Set([...Object.keys(pv),...Object.keys(atc)])].sort((a,b)=>(pv[b]||0)-(pv[a]||0)).slice(0,15);
   document.getElementById('topProducts').innerHTML = names.length? `<table><tr><th>Product</th><th>Views</th><th>Add to cart</th></tr>`+
     names.map(n=>`<tr><td>${esc(n||'—')}</td><td>${pv[n]||0}</td><td>${atc[n]||0}</td></tr>`).join('')+`</table>` : '<p class="muted">No product views yet — data appears as people browse.</p>';
+  renderProdDetail(); renderPageDetail(); renderFeed();
+}
+// ---- deeper dive: exactly which products / pages ----
+function pageTitle(p){
+  if(!p) return '(home)';
+  var map={'/mianah-home.html':'Home','/index.html':'Home','/':'Home','/mianah-shop.html':'Shop — all prints',
+    '/mianah-sofas.html':'Furniture collection','/mianah-originals.html':'Originals','/mianah-cart.html':'Cart',
+    '/mianah-about.html':'About','/mianah-contact.html':'Contact','/mianah-sizes.html':'Sizes','/mianah-admin.html':'Dashboard'};
+  var path=p.split('?')[0];
+  return (map[path]||path.replace('/mianah-','').replace('.html',''))+(p.indexOf('?id=')>-1?(' · '+p.split('id=')[1].split('&')[0]):'');
+}
+function renderProdDetail(){
+  var f=(document.getElementById('prodFilter').value||'').toLowerCase();
+  var pv=EVENTS.filter(e=>e.type==='product_view'), atc=EVENTS.filter(e=>e.type==='add_to_cart');
+  var rows={};
+  pv.forEach(e=>{var k=e.product_name||e.product_id||'?';rows[k]=rows[k]||{name:k,id:e.product_id,views:0,cart:0,last:e.ts};rows[k].views++;if(e.ts>rows[k].last)rows[k].last=e.ts;});
+  atc.forEach(e=>{var k=e.product_name||e.product_id||'?';rows[k]=rows[k]||{name:k,id:e.product_id,views:0,cart:0,last:e.ts};rows[k].cart++;});
+  var list=Object.values(rows).filter(r=>r.name.toLowerCase().includes(f)).sort((a,b)=>b.views-a.views||b.cart-a.cart);
+  document.getElementById('prodDetail').innerHTML=list.length?`<table><tr><th>Product</th><th>Views</th><th>Add to cart</th><th>Last viewed</th></tr>`+
+    list.map(r=>`<tr><td>${esc(r.name)}${r.id?` <span class="muted" style="font-size:.75rem">${esc(r.id)}</span>`:''}</td><td>${r.views}</td><td>${r.cart}</td><td class="muted">${new Date(r.last).toLocaleString()}</td></tr>`).join('')+`</table>`:'<p class="muted">No product views in this range yet.</p>';
+}
+function renderPageDetail(){
+  var f=(document.getElementById('pageFilter').value||'').toLowerCase();
+  var pv=EVENTS.filter(e=>e.type==='pageview'); var rows={};
+  pv.forEach(e=>{var k=e.path||'/';rows[k]=rows[k]||{path:k,views:0,sess:new Set(),last:e.ts};rows[k].views++;rows[k].sess.add(e.session);if(e.ts>rows[k].last)rows[k].last=e.ts;});
+  var list=Object.values(rows).map(r=>({path:r.path,title:pageTitle(r.path),views:r.views,uniq:r.sess.size,last:r.last}))
+    .filter(r=>r.title.toLowerCase().includes(f)||r.path.toLowerCase().includes(f)).sort((a,b)=>b.views-a.views);
+  document.getElementById('pageDetail').innerHTML=list.length?`<table><tr><th>Page</th><th>Views</th><th>Visitors</th><th>Last</th></tr>`+
+    list.map(r=>`<tr><td>${esc(r.title)}<div class="muted" style="font-size:.72rem">${esc(r.path)}</div></td><td>${r.views}</td><td>${r.uniq}</td><td class="muted">${new Date(r.last).toLocaleString()}</td></tr>`).join('')+`</table>`:'<p class="muted">No page views in this range yet.</p>';
+}
+function renderFeed(){
+  var ev=EVENTS.slice(0,60);
+  var icon={pageview:'👁',product_view:'🖼',add_to_cart:'🛒',begin_checkout:'💳',purchase:'✅',subscribe:'✉️'};
+  document.getElementById('feed').innerHTML=ev.length?`<table><tr><th>When</th><th>What</th><th>Detail</th><th>Country</th></tr>`+
+    ev.map(e=>`<tr><td class="muted" style="white-space:nowrap">${new Date(e.ts).toLocaleString()}</td><td>${icon[e.type]||''} ${esc(e.type.replace('_',' '))}</td><td>${esc(e.product_name||pageTitle(e.path))}</td><td>${esc(e.country||'')}</td></tr>`).join('')+`</table>`:'<p class="muted">No activity yet.</p>';
 }
 function tally(arr,key){const o={};arr.forEach(e=>{const k=e[key];if(k)o[k]=(o[k]||0)+1;});return o;}
 function tallyArr(arr){const o={};arr.forEach(k=>{if(k)o[k]=(o[k]||0)+1;});return o;}
