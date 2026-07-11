@@ -96,6 +96,7 @@
   <div class="wrap">
     <div class="tabs">
       <button class="tab on" data-view="overview" onclick="showView('overview',this)">Overview</button>
+      <button class="tab" data-view="sales" onclick="showView('sales',this)">Sales</button>
       <button class="tab" data-view="products" onclick="showView('products',this)">Products</button>
       <button class="tab" data-view="subscribers" onclick="showView('subscribers',this)">Subscribers</button>
       <button class="tab" data-view="messages" onclick="showView('messages',this)">Messages</button>
@@ -117,6 +118,12 @@
       <div class="panel"><h3>Every product viewed</h3><input id="prodFilter" placeholder="Filter…" oninput="renderProdDetail()" style="max-width:260px;margin-bottom:10px"><div id="prodDetail"></div></div>
       <div class="panel"><h3>Every page visited</h3><input id="pageFilter" placeholder="Filter…" oninput="renderPageDetail()" style="max-width:260px;margin-bottom:10px"><div id="pageDetail"></div></div>
       <div class="panel"><h3>Recent activity (live feed)</h3><div id="feed"></div></div>
+    </section>
+
+    <section id="v-sales" style="display:none">
+      <div class="stats" id="salesCards"></div>
+      <div class="panel"><h3>Products sold</h3><div id="soldProducts"></div></div>
+      <div class="panel"><h3>Every order</h3><div id="orderList"></div></div>
     </section>
 
     <section id="v-products" style="display:none">
@@ -218,8 +225,9 @@ function loadProducts(){
 function setRange(d,btn){RANGE=d;document.querySelectorAll('#rangeSel button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');loadEvents().then(renderOverview);}
 
 function showView(v,btn){CURVIEW=v;document.querySelectorAll('.tab[data-view]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-  ['overview','products','subscribers','messages'].forEach(x=>document.getElementById('v-'+x).style.display=x===v?'':'none');
+  ['overview','sales','products','subscribers','messages'].forEach(x=>document.getElementById('v-'+x).style.display=x===v?'':'none');
   document.getElementById('rangeSel').style.display=v==='overview'?'':'none';
+  if(v==='sales')loadOrders();
   if(v==='products')renderProducts();
   if(v==='subscribers')loadSubs();
   if(v==='messages')loadMsgs();
@@ -325,6 +333,43 @@ async function saveEdit(){if(!EDIT)return;const btn=document.getElementById('edS
   btn.disabled=false;
   if(error){toast('Error: '+error.message);return;}
   Object.assign(EDIT,patch);closeEdit();renderProducts();toast('Saved ✓ (see note about publishing)');
+}
+
+// ---------- SALES (real orders from Stripe) ----------
+const ORDERS_FN="https://faas-lon1-917a94a7.doserverless.co/api/v1/web/fn-4c454f73-367d-4894-a1da-59e827df7fbe/api/orders";
+const RATE={USD:1,AED:3.67,GBP:0.79,EUR:0.92,SAR:3.75,CAD:1.36,AUD:1.52,CHF:0.88,SGD:1.35};
+const toAED=(amt,cur)=>Math.round(amt/(RATE[cur]||1)*3.67);
+async function loadOrders(){
+  document.getElementById('orderList').innerHTML='<p class="muted">Loading your orders from Stripe…</p>';
+  const {data:{session}}=await sb.auth.getSession();
+  let res;
+  try{
+    const r=await fetch(ORDERS_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:session.access_token})});
+    res=await r.json();
+  }catch(e){document.getElementById('orderList').innerHTML='<p class="muted">Could not reach Stripe.</p>';return;}
+  if(res.error){document.getElementById('orderList').innerHTML='<p class="muted">'+esc(res.error)+'</p>';return;}
+
+  const orders=res.orders||[];
+  // stat cards
+  const revAED=orders.reduce((n,o)=>n+toAED(o.amount,o.currency),0);
+  const items=orders.reduce((n,o)=>n+(o.items||[]).reduce((m,i)=>m+(i.qty||1),0),0);
+  const cards=[['Revenue','AED '+revAED.toLocaleString()],['Orders',orders.length],['Items sold',items],
+    ['Avg order',orders.length?('AED '+Math.round(revAED/orders.length).toLocaleString()):'—']];
+  document.getElementById('salesCards').innerHTML=cards.map(c=>`<div class="stat"><div class="n">${c[1]}</div><div class="l">${c[0]}</div></div>`).join('');
+  // products sold aggregate
+  const sold={};
+  orders.forEach(o=>(o.items||[]).forEach(i=>{const k=i.name||'—';sold[k]=sold[k]||{q:0,aed:0};sold[k].q+=i.qty||1;sold[k].aed+=toAED(i.amount,o.currency);}));
+  const sl=Object.entries(sold).sort((a,b)=>b[1].q-a[1].q);
+  document.getElementById('soldProducts').innerHTML=sl.length?`<table><tr><th>Product</th><th>Qty sold</th><th>Revenue</th></tr>`+
+    sl.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.q}</td><td>AED ${v.aed.toLocaleString()}</td></tr>`).join('')+`</table>`:'<p class="muted">No sales yet.</p>';
+  // order list
+  document.getElementById('orderList').innerHTML=orders.length?`<table><tr><th>Date</th><th>Products</th><th>Total</th><th>Customer</th><th>Country</th></tr>`+
+    orders.map(o=>`<tr><td class="muted" style="white-space:nowrap">${new Date(o.date).toLocaleDateString()}</td>
+      <td>${(o.items||[]).map(i=>esc((i.qty>1?i.qty+'× ':'')+i.name)).join('<br>')||'—'}</td>
+      <td style="white-space:nowrap">${o.currency} ${o.amount.toLocaleString()}</td>
+      <td>${o.email?`<a href="mailto:${esc(o.email)}">${esc(o.email)}</a>`:'—'}</td>
+      <td>${esc(o.country||'')}</td></tr>`).join('')+`</table>`
+    :'<p class="muted">No paid orders yet. Real Stripe orders will appear here automatically.</p>';
 }
 
 // ---------- SUBSCRIBERS ----------
