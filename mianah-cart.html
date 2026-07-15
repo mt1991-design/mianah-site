@@ -187,7 +187,7 @@ var shipRegion=localStorage.getItem('mianah_region')||'uae';function setRegion(v
 function renderBasket(){saveBasket();const count=basket.reduce((n,b)=>n+b.qty,0);const cc=document.getElementById('cartCount');if(cc){cc.textContent=count;cc.style.display=count?'flex':'none';}
 const wrap=document.getElementById('drawerItems');if(!wrap)return;const foot=document.getElementById('drawerFoot');
 if(!basket.length){wrap.innerHTML='<div class="drawer-empty">Your basket is empty.</div>';if(foot)foot.style.display='none';return;}
-wrap.innerHTML=basket.map((b,i)=>'<div class="di"><img src="'+b.img+'" alt=""><div class="di-info"><h4>'+b.name+'</h4><div class="m">Size '+b.size+' \u00b7 Qty '+b.qty+'</div><button onclick="removeItem('+i+')">Remove</button></div><div class="di-price">'+money(b.priceUSD*b.qty)+'</div></div>').join('');
+wrap.innerHTML=basket.map((b,i)=>'<div class="di"><img src="'+b.img+'" alt=""><div class="di-info"><h4>'+b.name+'</h4><div class="m">Size '+b.size+(b.finish==='gems'?' \u00b7 hand-finished':'')+' \u00b7 Qty '+b.qty+'</div><button onclick="removeItem('+i+')">Remove</button></div><div class="di-price">'+money(b.priceUSD*b.qty)+'</div></div>').join('');
 if(foot)foot.style.display='block';var st=document.getElementById('subtotal');if(st)st.textContent=money(basket.reduce((n,b)=>n+b.priceUSD*b.qty,0));}
 function openCart(){var d=document.getElementById('drawer'),o=document.getElementById('overlay');if(d)d.classList.add('open');if(o)o.classList.add('open');}
 function closeCart(){var d=document.getElementById('drawer'),o=document.getElementById('overlay');if(d)d.classList.remove('open');if(o)o.classList.remove('open');}
