@@ -731,5 +731,6 @@ function renderBasket(){saveBasket();
   refreshPrices();setAnnounce(0,true);renderBasket();
 </script>
 <script>if(location.search.indexOf('order=success')>-1){try{localStorage.removeItem('mianah_basket');}catch(e){}var cc=document.getElementById('cartCount');if(cc){cc.textContent='0';cc.style.display='none';}setTimeout(function(){if(window.showToast)showToast('\ud83c\udf38 Thank you! Your order is confirmed \u2014 a receipt is on its way to your email.');},500);}</script><script>try{var _s=document.querySelector(".cur-select");if(_s)_s.value=(localStorage.getItem("mianah_cur")||"AED");}catch(e){}</script><script src="mianah-analytics.js" defer></script>
+<script src="mianah-search.js" defer></script>
 </body>
 </html>

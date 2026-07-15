@@ -122,6 +122,8 @@
 
     <section id="v-sales" style="display:none">
       <div class="stats" id="salesCards"></div>
+      <div class="panel"><h3>Discount codes</h3><div id="promoCodes"></div></div>
+      <div class="panel"><h3>Who redeemed a code</h3><div id="redemptions"></div></div>
       <div class="panel"><h3>Products sold</h3><div id="soldProducts"></div></div>
       <div class="panel"><h3>Every order</h3><div id="orderList"></div></div>
     </section>
@@ -359,6 +361,18 @@ async function loadOrders(){
   // products sold aggregate
   const sold={};
   orders.forEach(o=>(o.items||[]).forEach(i=>{const k=i.name||'—';sold[k]=sold[k]||{q:0,aed:0};sold[k].q+=i.qty||1;sold[k].aed+=toAED(i.amount,o.currency);}));
+  // discount codes + who redeemed
+  const promos=res.promos||[];
+  document.getElementById('promoCodes').innerHTML=promos.length?`<table><tr><th>Code</th><th>Discount</th><th>Times redeemed</th><th>Total given</th><th>Status</th></tr>`+
+    promos.map(p=>{
+      const given=orders.filter(o=>o.promo===p.code).reduce((n,o)=>n+toAED(o.discount||0,o.currency),0);
+      const disc=p.percent?p.percent+'% off':(p.amount_off?('AED '+p.amount_off):'—');
+      return `<tr><td><b>${esc(p.code)}</b></td><td>${disc}</td><td>${p.times_redeemed}</td><td>AED ${given.toLocaleString()}</td><td>${p.active?'<span class="tag on">Active</span>':'<span class="tag off">Off</span>'}</td></tr>`;
+    }).join('')+`</table>` : '<p class="muted">No discount codes yet.</p>';
+  const reds=orders.filter(o=>o.promo||(o.discount>0));
+  document.getElementById('redemptions').innerHTML=reds.length?`<table><tr><th>Date</th><th>Code</th><th>Customer</th><th>Discount</th><th>Order total</th></tr>`+
+    reds.map(o=>`<tr><td class="muted" style="white-space:nowrap">${new Date(o.date).toLocaleDateString()}</td><td><b>${esc(o.promo||'—')}</b></td><td>${o.email?`<a href="mailto:${esc(o.email)}">${esc(o.email)}</a>`:esc(o.name||'—')}</td><td>${o.currency} ${(o.discount||0).toLocaleString()}</td><td>${o.currency} ${o.amount.toLocaleString()}</td></tr>`).join('')+`</table>` : '<p class="muted">No one has used a code yet. Redemptions will appear here automatically.</p>';
+
   const sl=Object.entries(sold).sort((a,b)=>b[1].q-a[1].q);
   document.getElementById('soldProducts').innerHTML=sl.length?`<table><tr><th>Product</th><th>Qty sold</th><th>Revenue</th></tr>`+
     sl.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.q}</td><td>AED ${v.aed.toLocaleString()}</td></tr>`).join('')+`</table>`:'<p class="muted">No sales yet.</p>';
